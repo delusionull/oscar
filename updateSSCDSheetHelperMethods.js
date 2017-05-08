@@ -82,7 +82,7 @@ function updateAddOrRemoveRows(s_sheet, i_sheet, s_sos, i_sos) {
   for (var i in s_sos) {
     incoming_index = ArrayLib.indexOf(i_sos, 0, s_sos[i][0]);
     if (incoming_index == -1) {  // clear row
-      s_sheet.getRange(+i + 2, 1, 1, toNum(sscd_last_column)).clearContent().clearNote().setBackground("white");
+      s_sheet.getRange(+i + 2, 1, 1, toNum(sscd_last_column)).clearContent().clearNote().clear({commentsOnly: true}).setBackground("white");
     }
   }
 }
