@@ -28,3 +28,9 @@ function triggerEveryHour() {
   // check for new data and refresh SSCD current sheet
 }
 
+function triggerEveryDayAt2AM() {
+  var sscd = SpreadsheetApp.getActive();
+  var sscd_sheet = sscd.getSheetByName(sscd_sheet_name)
+  normalizeFontOfRange(sscd_sheet, sscd_edit_range);
+}
+

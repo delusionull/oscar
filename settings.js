@@ -13,6 +13,7 @@ var lookitme_sheet_name         = 'CHANGELOG';
 var first_edit_column           = 8;
 var num_of_edit_columns         = 9;
 
+var sscd_edit_range             = "H2:P";
 var sscd_last_column            = "AA";
 
 var sales_order_column          = "A"
@@ -42,6 +43,6 @@ var csr_editors                 = ["***REMOVED***", "***REMOVED***", "***REMOVED
 var shipping_editors            = ["***REMOVED***", "***REMOVED***", "***REMOVED***"];
 var purch_editors               = ["***REMOVED***", "***REMOVED***", "***REMOVED***"];
 
-// Number of holidays since last working day 
+// Number of holidays since last working day
 var holiday                     = 0;
 

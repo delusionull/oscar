@@ -7,6 +7,7 @@ function setCellEditNote(edit) {
   edit.range.setNote( "[edit: " + time_of_edit + "]:\n" +
                 new_note + "\n\n" +
                 prev_cell_note );
+  edit.range.setFontWeight("bold").setFontStyle("italic");
 }
 
 function csrActionNoteText(edit) {

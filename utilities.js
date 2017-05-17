@@ -79,14 +79,19 @@ function freeze1Row1Col(sheet, status) {
   sheet.setFrozenColumns(status);
 }
 
+function normalizeFontOfRange(sheet, range) {
+  var ss_range = sheet.getRange(range);
+  ss_range.setFontWeight("normal").setFontStyle("normal")
+}
+
 // Pass a sheet, column, and search string;
 // Returns row of first matching cell.
 function findInColumn(sheet, col, data) {
   var column = sheet.getRange(col + ":" + col);  // like A:A
-  var values = column.getValues(); 
+  var values = column.getValues();
   var row = 0;
   while ( values[row] && values[row][0] !== data ) { row++ }
-  if (values[row][0] === data) { return row+1 } else { return -1 }    
+  if (values[row][0] === data) { return row+1 } else { return -1 }
 }
 
 
@@ -96,7 +101,7 @@ function forEveryValueInColumn() {
   Logger.log("start");
   var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sscd_sheet_name);
   var col = "H";
-  
+
   var values = ss.getRange(col + "2:" + "Q" + ss.getLastRow()).getValues();
   var rows_in_col = values.length;
   var row = 0;
@@ -113,11 +118,11 @@ function forEveryValueInColumn() {
     row++;
   }
   Logger.log("finish");
-}  
+}
 
 function latestDate(datearray) {
   var latest = datearray[0];
-  
+
   for (var i = 0; i < datearray.length; i++) {
     if (latest < datearray[i] ) {
       latest = datearray[i];
