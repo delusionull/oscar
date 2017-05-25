@@ -4,22 +4,9 @@ require 'date'
 require 'sequel'
 require 'csv'
 
-# LOCATION should be set to 'Dal' (Dallas) or 'KC' (Kansas City)
-LOCATION = 'Dal'
-
-#MAS90_PATH = 'W:\\shazam\\' +
-#               "#{'Data Update\\' if LOCATION == 'KC'}" +
-#             'Mas90 Data Copy.mdb'
-#SCHED_PATH = 'W:\\shazam\\Schedule Shazam.mdb'
-MAS90_PATH = 'W:\\shazam\\' +
-               "#{'Data Update\\' if LOCATION == 'KC'}" +
-             'Mas90_JB.mdb'
-SCHED_PATH = 'W:\\shazam\\Schedule_JB.mdb'
-
-connection_string = 'Provider=Microsoft.Jet.OLEDB.4.0;Data Source='
-
-DB_MAS90 = Sequel.ado(:conn_string=>connection_string + MAS90_PATH)
-DB_SCHED = Sequel.ado(:conn_string=>connection_string + SCHED_PATH)
+ require_relative 'lib/db_connections'
+ require_relative 'lib/utils'
+ $stdout.sync = true
 
 layup_items = DB_SCHED[:tblLayupItems].join(:tblJobs, :JobID => :JobID)
 
