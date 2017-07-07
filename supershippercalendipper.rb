@@ -10,6 +10,9 @@ require 'csv'
 
 layup_items = DB_SCHED[:tblLayupItems].join(:tblJobs, :JobID => :JobID)
 
+# non-breaking space character
+nbsp = 0xA0.chr
+
 so_shipping_qry =
 'SELECT FORMAT(eh.ShipExpireDate, "YYYY-MM-DD")                           AS ShipDate,
          Rtrim(eh.ShipViaRate)                                            AS ShipVia,
@@ -98,6 +101,9 @@ def fsc_so?(so, fsc_orders)
 end
 
 layup_items = DB_SCHED[:tblLayupItems].join(:tblJobs, :JobID => :JobID)
+def so_layup_lines_exist_in_schedule?(so, layup_items)
+  layup_items.where(:JobSalesOrderNo => "#{so}").first
+end
 
 def add_csv_row(row)
   CSV.open("shipcal.csv", "a") do |csv_row|
@@ -110,6 +116,11 @@ end
 
 open_sales_orders.each do |line|
   flg = ''
+  flag_materialcost = ''
+  flag_hold = ''
+  flag_notinschedule = ''
+  flag_fsc = ''
+
   pos       = purchase_orders
                .where(Sequel.like(:Comment, "%#{line[:SalesOrder]}%"))
                .select_map([:PurchaseOrderNumber])
@@ -136,18 +147,18 @@ open_sales_orders.each do |line|
                         .select_map(:ItemNumber)[0]
       materials_with_num << "#{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}#{material_is_on_so ? '@$' + cost + 'ea' : '[not on SO]'})"
       #materials_with_num << "#{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}\)"
-      flg = 6 if cost.to_i > 150
+      flag_materialcost = "6" if cost.to_i > 150
         #puts "#{line[:SalesOrder].to_s.strip}  #{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}@$#{material_cost}ea\)"
     end
   end
+#line[:SalesOrder].to_s.strip.match(/^[DK]\d{6}$/)
+  flag_hold = line[:Flag].to_s.strip.match(/^[1234]$/)
+  flag_notinschedule = "8" unless ( line[:SalesOrder][0] == "E" or so_layup_lines_exist_in_schedule?(line[:SalesOrder], layup_items) )
+  flag_fsc = "5" if fsc_so?(line[:SalesOrder], fsc_orders)
 
-  flg = if (hld_flg = line[:Flag].to_s.strip.match(/^[1234]$/))
-         hld_flg 
-        elsif fsc_so?(line[:SalesOrder], fsc_orders)
-          5
-        else
-          flg
-        end
+  flg = flag_hold.to_s + flag_fsc + flag_materialcost + flag_notinschedule
+  flg = nbsp + flg unless flg.empty?
+
   #flg = get_flags(line[:SalesOrder], line[:Hold].to_s.strip.match(/^[123]$/)})
 
   # sales_order_last_material_eta = layup_items.select(:LayupID, :LayupBin)
