@@ -10,9 +10,6 @@ require 'csv'
 
 layup_items = DB_SCHED[:tblLayupItems].join(:tblJobs, :JobID => :JobID)
 
-# non-breaking space character
-nbsp = 0xA0.chr
-
 so_shipping_qry =
 'SELECT FORMAT(eh.ShipExpireDate, "YYYY-MM-DD")                           AS ShipDate,
          Rtrim(eh.ShipViaRate)                                            AS ShipVia,
@@ -157,7 +154,7 @@ open_sales_orders.each do |line|
   flag_fsc = "5" if fsc_so?(line[:SalesOrder], fsc_orders)
 
   flg = flag_hold.to_s + flag_fsc + flag_materialcost + flag_notinschedule
-  flg = nbsp + flg unless flg.empty?
+  flg = flg + '_' unless flg.empty?
 
   #flg = get_flags(line[:SalesOrder], line[:Hold].to_s.strip.match(/^[123]$/)})
 
