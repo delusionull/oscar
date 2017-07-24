@@ -3,26 +3,28 @@ function setCellEditNote(edit) {
   var time_of_edit = ( isoDateString() + " " + isoTimeString(_, 1) );
   var old_value = ( Boolean(edit.oldValue) ? edit.oldValue : "blank" );
   var prev_cell_note = ( edit.range.getNote() ? edit.range.getNote() : "[original value]:\n" + old_value );
-  var new_note = (csrActionNoteText(edit) || highlightOverrideText(edit) || cellDeletedText(edit) || edit.range.getValue() );
+  var new_note = ( highlightOverrideText(edit) || cellDeletedText(edit) || edit.range.getValue() );
   edit.range.setNote( "[edit: " + time_of_edit + "]:\n" +
                 new_note + "\n\n" +
                 prev_cell_note );
   edit.range.setFontWeight("bold").setFontStyle("italic");
 }
 
-function csrActionNoteText(edit) {
-  if (edit.range.getColumn() == toNum(mtg_notes_column)) {
-    if (edit.range.getValue() == "#") {
-      var new_cell_text = "#" + isoDateString() + "\n" + (edit.oldValue ? edit.oldValue : '');
-      edit.range.setValue(new_cell_text);
-      return new_cell_text;
-    } else if (/#( |$)/m.test(edit.range.getValue())) {
-      var new_cell_text = edit.range.getValue().replace(/(.*)(#)( |$)(.*)/m, '$1$2' + isoDateString() + '\n$4');
-      edit.range.setValue(new_cell_text);
-      return new_cell_text;
-    }
-  }
-}
+// Deprecated in 1.0.8.02 - No one uses this feature, removing should cause
+// edits to be quicker.
+//function csrActionNoteText(edit) {
+//  if (edit.range.getColumn() == toNum(mtg_notes_column)) {
+//    if (edit.range.getValue() == "#") {
+//      var new_cell_text = "#" + isoDateString() + "\n" + (edit.oldValue ? edit.oldValue : '');
+//      edit.range.setValue(new_cell_text);
+//      return new_cell_text;
+//    } else if (/#( |$)/m.test(edit.range.getValue())) {
+//      var new_cell_text = edit.range.getValue().replace(/(.*)(#)( |$)(.*)/m, '$1$2' + isoDateString() + '\n$4');
+//      edit.range.setValue(new_cell_text);
+//      return new_cell_text;
+//    }
+//  }
+//}
 
 function highlightOverrideText(edit) {
   if (edit.range.getValue() === "!!!") {
