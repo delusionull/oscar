@@ -185,6 +185,7 @@ open_sales_orders.each do |line|
     apd_date = "FIX"
     apd_code = "FORMAT"
   end
+  # version 1.1.0.00 - adds gross margin column
   margin = gross_margin(line[:Dollars], line[:Cost])
 
   so_info =  ""
