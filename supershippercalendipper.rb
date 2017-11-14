@@ -28,8 +28,11 @@ so_shipping_qry =
          Rtrim(eh.ShipToCity)                                             AS City,
          Rtrim(eh.ShipToState)                                            AS State,
          Sum( so_04sohistorydetail.revisedorderquantity * Iif(
-                               im1_inventorymasterfile.weight > "0",
-                               Cint(im1_inventorymasterfile.weight), 0) ) AS Weight
+                        im1_inventorymasterfile.itemnumber Like "PRE%",
+                        0, im1_inventorymasterfile.lastcost ) )           AS Cost,
+         Sum( so_04sohistorydetail.revisedorderquantity * Iif(
+                        im1_inventorymasterfile.weight > "0",
+                        Cint(im1_inventorymasterfile.weight), 0) )        AS Weight
 
    FROM   (((so1_soentryheader eh
            INNER JOIN (im1_inventorymasterfile
@@ -111,6 +114,11 @@ end
 def get_flags(so)
 end
 
+def gross_margin(revenue, cost)
+  gm = revenue.nonzero? ? (cost ? 100 * (revenue - cost) / revenue : 0) : 0
+  return (gm).round(2)
+end
+
 open_sales_orders.each do |line|
   flg = ''
   flag_materialcost = ''
@@ -124,6 +132,7 @@ open_sales_orders.each do |line|
 
   pos_with_num_and_date = []
   materials_with_num = [] 
+
   pos.each_with_index do |po, index|
     po_date = purchase_orders
                .where(:PurchaseOrderNumber => po)
@@ -176,6 +185,7 @@ open_sales_orders.each do |line|
     apd_date = "FIX"
     apd_code = "FORMAT"
   end
+  margin = gross_margin(line[:Dollars], line[:Cost])
 
   so_info =  ""
   so_info << "#{line[:SalesOrder]},"
@@ -183,6 +193,7 @@ open_sales_orders.each do |line|
   so_info << "#{line[:ShipDate]},"
   so_info << "#{psa_ary.include?(line[:SalesOrder]) ? 'psa' : line[:SOType]},"
   so_info << "#{flg},"
+  so_info << "#{margin}%,"
   so_info << "#{line[:Customer].to_s.tr_s(' ,', ' ').strip},"
   so_info << "#{apd_date}_#{apd_code},"
   so_info << "," * 9
