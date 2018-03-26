@@ -13,4 +13,3 @@ function updateShippingSheets() {
   hideEmptyRows(shipping_today_sheet)
   hideEmptyRows(shipping_tomorrow_sheet)
 }
-

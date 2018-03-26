@@ -9,7 +9,7 @@ function isoDateString(date, extended) {
   var yr    = date.getFullYear();
   var dd    = ("0" + date.getDate()).slice(-2);
   var mm    = ("0" + (date.getMonth()+1)).slice(-2);
-
+  
   return yr.toString() + dash +
          mm.toString() + dash +
          dd.toString();
@@ -47,12 +47,19 @@ function incrementBusinessDateBy(start_date, increment_by) {
 // Check for the existence of a file on the root of the user's Google Drive
 function fileExistsOnGDriveRoot(file_name) { return (DriveApp.getRootFolder().getFilesByName(file_name).hasNext() ? true : false) }
 
-// Popup message
+// Popup message in lower right corner
 function toaster(msg, title, time) {
   msg   = (msg   === undefined ? "" : msg);
   title = (title === undefined ? "" : title);
   time  = (time  === undefined ? 20 : time);
   SpreadsheetApp.getActiveSpreadsheet().toast(msg, title, time);
+}
+
+// Popup "Okay" dialog box with message
+function say(msg) {
+  msg   = (msg   === undefined ? "" : msg);
+  var ui = SpreadsheetApp.getUi();
+  ui.alert(msg);
 }
 
 // Convert a one or two digit letter to its number
@@ -84,16 +91,29 @@ function normalizeFontOfRange(sheet, range) {
   ss_range.setFontWeight("normal").setFontStyle("normal")
 }
 
+function getWeekDay(date){
+  date = (date === undefined ? new Date() : date);
+  var dayNumber = date.getDay();
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return days[dayNumber];
+}
+
 // Pass a sheet, column, and search string;
 // Returns row of first matching cell.
 function findInColumn(sheet, col, data) {
   var column = sheet.getRange(col + ":" + col);  // like A:A
-  var values = column.getValues();
+  var values = column.getValues(); 
   var row = 0;
   while ( values[row] && values[row][0] !== data ) { row++ }
-  if (values[row][0] === data) { return row+1 } else { return -1 }
+  if (values[row][0] === data) { return row+1 } else { return -1 }    
 }
 
+
+
+
+
+
+// Testing stuff below here:
 
 // Do something with every row based on the value of the first column.
 //function forEveryValueInColumn(ss, col) {
@@ -101,7 +121,7 @@ function forEveryValueInColumn() {
   Logger.log("start");
   var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sscd_sheet_name);
   var col = "H";
-
+  
   var values = ss.getRange(col + "2:" + "Q" + ss.getLastRow()).getValues();
   var rows_in_col = values.length;
   var row = 0;
@@ -118,11 +138,11 @@ function forEveryValueInColumn() {
     row++;
   }
   Logger.log("finish");
-}
+}  
 
 function latestDate(datearray) {
   var latest = datearray[0];
-
+  
   for (var i = 0; i < datearray.length; i++) {
     if (latest < datearray[i] ) {
       latest = datearray[i];
@@ -131,5 +151,85 @@ function latestDate(datearray) {
   return latest.replace(/\d{4}(\d{2})(\d{2})/g, 'wfmm $1/$2').replace(/\b0/g, '');
 }
 
+
 function somethingOrNothing(thing) { return ((thing != null) ? thing.valueOf() : "NOTHING") }
 
+function sortSscdSheet() {
+  var sscd = SpreadsheetApp.getActive();
+  var sscd_sheet = sscd.getSheetByName(sscd_sheet_name)
+  fancySort(sscd_sheet);
+}
+
+function testOk() {
+  var ui = SpreadsheetApp.getUi();
+  ui.alert("Test");
+}
+
+function testStuff() {  // test comment
+//  Logger.log(getWeekDay());
+  
+  
+  var sscd = SpreadsheetApp.getActive();
+//  var ss = SpreadsheetApp.getActiveSpreadsheet();
+//  var sheet = ss.getSheets()[0];
+//  var range = sheet.getRange(1, 1, 3, 3);
+//  var values = range.getValues();
+//
+//  // Print values from a 3x3 box.
+//  for (var row in values) {
+//    for (var col in values[row]) {
+//      Logger.log(values[row][col]);
+//    }
+//  }
+
+  
+  
+//  var vars_sheet = sscd.getSheetByName("vars")
+//  var last_timestamp = vars_sheet.getRange(vars_sheet_last_timestamp).getValue();
+
+//  var sscd_name = sscd.getName();
+//  sscd.rename(sscd_name.replace(/; .*/, "; ") + "3rd test");
+  var sscd_sheet = sscd.getSheetByName("current");
+  fancySort(sscd_sheet);
+//  sscd_sheet.activate();
+//  var test_sheet = sscd.getActiveSheet();
+//  var sscd_sheet_name = test_sheet.getName();
+//  Logger.log(last_timestamp);
+  //var sheetname;
+  //var sheet;
+  //for (var i = 35; i < 39; i++) {
+  //  sheetname = sscd_sheets[(i)].getSheetName();
+  //  sheet = sscd.getSheets()[(i)]
+  //  sscd.deleteSheet(sheet);
+//    Logger.log("deleted " + i + " - " + sheetname);
+//  }
+  //toaster(fileExistsOnGDriveRoot("shipal.csv"))
+  //Logger.log("Protected ranges:\n")
+//  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("20161102");
+//  var range_to_protect = ss.getRange(csr_notes_column + ":" + csr_notes_column);
+//  var protection = range_to_protect.protect().setDescription("testing...");
+//  protection.removeEditors(protection.getEditors());
+//  protection.addEditors(csr_editors).addEditors(sscd_editors);
+  /**var protections = ss.getProtections(SpreadsheetApp.ProtectionType.RANGE);
+  for (var i = 0; i < protections.length; i++) {
+    var protection = protections[i];
+    Logger.log(protection.getRange().getA1Notation());
+    Logger.log(protection.getEditors());
+    //if (protection.canEdit()) {
+    //  protection.remove();
+    //}
+  }
+  Logger.log("Sheet protection:\n")
+  var sheet_protection = ss.getProtections(SpreadsheetApp.ProtectionType.SHEET)[0];
+  var sheet_editors = sheet_protection.getEditors();
+  Logger.log(sheet_editors);
+  var unprotected = sheet_protection.getUnprotectedRanges();
+  for (var i = 0; i < unprotected.length; i++) {
+    var protection = unprotected[i];
+    Logger.log(protection.getA1Notation());
+    //if (protection.canEdit()) {
+    //  protection.remove();
+    //}
+  }
+  */
+}

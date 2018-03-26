@@ -8,6 +8,7 @@ function setCellEditNote(edit) {
                 new_note + "\n\n" +
                 prev_cell_note );
   edit.range.setFontWeight("bold").setFontStyle("italic");
+  Logger.log("here");
 }
 
 // Deprecated in 1.0.8.02 - No one uses this feature, removing should cause
@@ -49,7 +50,7 @@ function undoProhibitedEdit(edit) {
   if ( isHeaderRowEdit(edit) || isProhibitedColumnEdit(edit) ) { undoEdit(edit); return true; } else { return false }
 }
 
-function override() { if (override_on === true && Session.getActiveUser().getEmail() === sscd_coder) { return true } }
+function override() { if (override_on === true && sscd_maint_coders.includes( Session.getActiveUser().getEmail() ) ) { return true } }
 
 function isHeaderRowEdit(edit) { return ( (edit.range.getRow() === 1) ? true : false ) }
 
@@ -59,4 +60,3 @@ function isProhibitedColumnEdit(edit) {
 }
 
 function undoEdit(edit) { edit.range.setValue(edit.oldValue ? edit.oldValue : '') }
-

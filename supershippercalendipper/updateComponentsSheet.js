@@ -10,4 +10,3 @@ function updateComponentsSheet() {
                                                  so_type_column + " contains 'tp')\")");
   hideEmptyRows(components_sheet)
 }
-

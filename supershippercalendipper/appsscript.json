@@ -1,0 +1,11 @@
+{
+  "timeZone": "America/Chicago",
+  "dependencies": {
+    "libraries": [{
+      "userSymbol": "ArrayLib",
+      "libraryId": "1r9wNWbta3ebuYL4ENAdIp4UYKmyNiWf1AqsXYzfXduRHhTZEeTxS9MhZ",
+      "version": "23"
+    }]
+  },
+  "exceptionLogging": "STACKDRIVER"
+}

@@ -11,7 +11,8 @@ function onOpen() {
               .addItem('Generate CSR Action Sheet...', 'generateCSRActionSheet'))
   .addSeparator()
   .addSubMenu(ui.createMenu('Scheduler')
-              .addItem('Update SSCD Sheet...',    'updateSSCDSheet'))
+              .addItem('Update SSCD Sheet...',    'updateSSCDSheet')
+              .addItem('Backup SSCD...', 'backupSscd'))
   .addToUi();
 }
 
@@ -33,4 +34,3 @@ function triggerEveryDayAt2AM() {
   var sscd_sheet = sscd.getSheetByName(sscd_sheet_name)
   normalizeFontOfRange(sscd_sheet, sscd_edit_range);
 }
-

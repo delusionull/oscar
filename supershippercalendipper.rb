@@ -24,11 +24,13 @@ so_shipping_qry =
          cm.SalesPersonCode                                               AS SalesPerson,
          eh.NonTaxableAmount                                              AS Dollars,
          Rtrim(eh.CustomerNumber)                                         AS Customer,
+         Rtrim(eh.CustomerPONumber)                                       AS CustomerPO,
          Rtrim(eh.BillToName)                                             AS CustomerFullName,
          Rtrim(eh.ShipToCity)                                             AS City,
          Rtrim(eh.ShipToState)                                            AS State,
          Sum( so_04sohistorydetail.revisedorderquantity * Iif(
-                        im1_inventorymasterfile.itemnumber Like "PRE%",
+                        (im1_inventorymasterfile.itemnumber Like "PRE%" OR
+                         so_04sohistorydetail.CancelledLine = "Y"),
                         0, im1_inventorymasterfile.lastcost ) )           AS Cost,
          Sum( so_04sohistorydetail.revisedorderquantity * Iif(
                         im1_inventorymasterfile.weight > "0",
@@ -60,7 +62,8 @@ so_shipping_qry =
              eh.BillToName,
              eh.ShipToCity,
              eh.ShipToState,
-             eh.TaxExemptNumber
+             eh.TaxExemptNumber,
+             eh.CustomerPONumber
 
    ORDER  BY eh.shipexpiredate,
              eh.shipviarate,
@@ -117,10 +120,13 @@ end
 def gross_margin(revenue, cost)
   gm = revenue.nonzero? ? (cost ? 100 * (revenue - cost) / revenue : 0) : 0
   return (gm).round(2)
+  #return (gm).round
 end
 
 open_sales_orders.each do |line|
   flg = ''
+  flag_overdue_po = ''
+  flag_waiting_for_material = ''
   flag_materialcost = ''
   flag_hold = ''
   flag_notinschedule = ''
@@ -138,6 +144,8 @@ open_sales_orders.each do |line|
                .where(:PurchaseOrderNumber => po)
                .select_map(:RequiredExpireDate)
     
+    #flag_po_after_ship_date = "b" if po_date[0].strftime("%F") > line[:ShipDate]
+
     pos_with_num_and_date << po_date[0].strftime("#{index+1};#{po[0]};%F")
 
     material  = po_material_items
@@ -153,8 +161,10 @@ open_sales_orders.each do |line|
                         .select_map(:ItemNumber)[0]
       materials_with_num << "#{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}#{material_is_on_so ? '@$' + cost + 'ea' : '[not on SO]'})"
       #materials_with_num << "#{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}\)"
+      flag_waiting_for_material = "9" if qty_rec < qty_ord
       flag_materialcost = "6" if cost.to_i > 150
         #puts "#{line[:SalesOrder].to_s.strip}  #{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}@$#{material_cost}ea\)"
+      flag_overdue_po = "a" if (po_date[0].strftime("%F") < Time.now.strftime("%F") && qty_rec < qty_ord)
     end
   end
 #line[:SalesOrder].to_s.strip.match(/^[DK]\d{6}$/)
@@ -162,7 +172,12 @@ open_sales_orders.each do |line|
   flag_notinschedule = "8" unless ( line[:SalesOrder][0] == "E" or so_layup_lines_exist_in_schedule?(line[:SalesOrder], layup_items) )
   flag_fsc = "5" if fsc_so?(line[:SalesOrder], fsc_orders)
 
-  flg = flag_hold.to_s + flag_fsc + flag_materialcost + flag_notinschedule
+  flg = flag_hold.to_s +
+        flag_fsc +
+        flag_materialcost +
+        flag_notinschedule +
+        flag_waiting_for_material +
+        flag_overdue_po
   flg = flg + '_' unless flg.empty?
 
   #flg = get_flags(line[:SalesOrder], line[:Hold].to_s.strip.match(/^[123]$/)})
@@ -176,6 +191,8 @@ open_sales_orders.each do |line|
                #                               .where(:JobSalesOrderNo => "D025790").all
   # p sales_order_last_material_eta
   # abort
+  customer = "#{line[:Customer].to_s.tr_s(' ,', ' ').strip}"
+  customer_po = "#{line[:CustomerPO].to_s.strip.match(/[-A-Za-z0-9_]+/)}"
   weight = "#{line[:SalesOrder].to_s.strip.match(/^[DK]\d{6}$/) ? line[:Weight] : 0}"
   apdmove = /(?<date>\d{2}\/\d{2}\/\d{2})(-(?<code>\w+))?/.match("#{line[:APDMove].to_s.strip}")
   if apdmove
@@ -185,7 +202,6 @@ open_sales_orders.each do |line|
     apd_date = "FIX"
     apd_code = "FORMAT"
   end
-  # version 1.1.0.00 - adds gross margin column
   margin = gross_margin(line[:Dollars], line[:Cost])
 
   so_info =  ""
@@ -195,12 +211,12 @@ open_sales_orders.each do |line|
   so_info << "#{psa_ary.include?(line[:SalesOrder]) ? 'psa' : line[:SOType]},"
   so_info << "#{flg},"
   so_info << "#{margin}%,"
-  so_info << "#{line[:Customer].to_s.tr_s(' ,', ' ').strip},"
+  so_info << "#{(customer + (' ' + ' ' * (16 - customer.length)) + customer_po).strip},"
   so_info << "#{apd_date}_#{apd_code},"
   so_info << "," * 9
   so_info << "#{pos_with_num_and_date*' '},"
   so_info << "#{materials_with_num*' '},"
-  so_info << "$#{line[:Dollars]},"
+  so_info << "$#{line[:Dollars] < 1 ? -(line[:Cost]) : line[:Dollars]}," # if "line[:Dollars]" < $1 then display neg (-)"line[:Cost]"
   so_info << "#{weight},"
   so_info << "#{line[:ShipVia].to_s.tr_s(' ,', ' ').strip},"
   so_info << "#{line[:City].to_s.tr_s(' ,', ' ').strip},"

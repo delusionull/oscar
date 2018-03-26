@@ -6,6 +6,8 @@ function updateSSCDSheet() {
   var sscd_sheet     = sscd.getSheetByName(sscd_sheet_name);
   var incoming_sheet = sscd.getSheetByName(incoming_sheet_name);
   var vars_sheet     = sscd.getSheetByName(vars_sheet_name);
+  
+  checkForSscdBloat(sscd);
 
   if (checkForNewData() == false) {return};
   sscdSheetIsFirst(sscd, sscd_sheet);
@@ -30,6 +32,6 @@ function updateSSCDSheet() {
   
   hideEmptyRows(sscd_sheet);
   freeze1Row1Col(sscd_sheet, true);
-  sscd_sheet.showSheet().activate();
+  sscd_sheet.showSheet();
+  sscd_sheet.activate();
 }
-
