@@ -1,5 +1,7 @@
 // Global SSCD settings go here.
 
+var lw_site_location            = "Dallas";
+
 var sscd_index                  = 1;
 
 var sscd_data_file_name         = "sscd.csv";

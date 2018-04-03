@@ -15,7 +15,7 @@ function createSscdBackup(sscd) {
   var sscd_id = sscd.getId();
   var file = DriveApp.getFileById(sscd_id);
   var backup_file;
-  backup_file = file.makeCopy('SSCD Backup: ' + isoDateString(_, 1));
+  backup_file = file.makeCopy(lw_site_location + ' SSCD Backup: ' + isoDateString(_, 1));
   setSscdBackupPerms(backup_file)
   return backup_file;
 }
@@ -43,11 +43,6 @@ function getSheetNamesThatEndWithBak(sheets) {
     }
   }
   return bak_sheets.sort();
-}
-
-function test001() {
-  var sscd           = SpreadsheetApp.getActive();
-  checkForSscdBloat(sscd)
 }
 
 function checkForSscdBloat(sscd) {

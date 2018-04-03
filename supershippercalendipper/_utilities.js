@@ -152,18 +152,13 @@ function latestDate(datearray) {
 }
 
 
-function somethingOrNothing(thing) { return ((thing != null) ? thing.valueOf() : "NOTHING") }
-
 function sortSscdSheet() {
   var sscd = SpreadsheetApp.getActive();
   var sscd_sheet = sscd.getSheetByName(sscd_sheet_name)
   fancySort(sscd_sheet);
 }
 
-function testOk() {
-  var ui = SpreadsheetApp.getUi();
-  ui.alert("Test");
-}
+function somethingOrNothing(thing) { return ((thing != null) ? thing.valueOf() : "NOTHING") }
 
 function testStuff() {  // test comment
 //  Logger.log(getWeekDay());
@@ -182,7 +177,7 @@ function testStuff() {  // test comment
 //    }
 //  }
 
-  
+  checkForSscdBloat(sscd);
   
 //  var vars_sheet = sscd.getSheetByName("vars")
 //  var last_timestamp = vars_sheet.getRange(vars_sheet_last_timestamp).getValue();
@@ -190,7 +185,7 @@ function testStuff() {  // test comment
 //  var sscd_name = sscd.getName();
 //  sscd.rename(sscd_name.replace(/; .*/, "; ") + "3rd test");
   var sscd_sheet = sscd.getSheetByName("current");
-  fancySort(sscd_sheet);
+//  fancySort(sscd_sheet);
 //  sscd_sheet.activate();
 //  var test_sheet = sscd.getActiveSheet();
 //  var sscd_sheet_name = test_sheet.getName();
