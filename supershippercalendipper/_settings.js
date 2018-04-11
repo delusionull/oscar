@@ -11,6 +11,7 @@ var vars_sheet_name             = "vars";
 var components_sheet_name       = "Components";
 var csr_action_sheet_name       = 'CSR Action Sheet';
 var lookitme_sheet_name         = 'CHANGELOG';
+var drsheet_name                = 'DRsheet';
 
 var first_edit_column           = 9;
 var num_of_edit_columns         = 9;

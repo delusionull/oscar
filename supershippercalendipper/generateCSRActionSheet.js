@@ -2,7 +2,7 @@
  * Creates a new sheet containing "Action Items" based on a query for
  * a certain string in the "MTG Notes" column.
  */
-function generateCSRActionSheet() {
+function generateCsrActionSheet() {
   var ss = SpreadsheetApp.getActive();
   var sscd_sheet = ss.getSheetByName(sscd_sheet_name);
   var formatting_source_range = sscd_sheet.getRange("A2:W2");

@@ -8,10 +8,10 @@ function onOpen() {
   var ui = SpreadsheetApp.getUi();
   ui.createMenu('SSCD Tools')
   .addSubMenu(ui.createMenu('CSR')
-              .addItem('Generate CSR Action Sheet...', 'generateCSRActionSheet'))
+              .addItem('Generate CSR Action Sheet...', 'generateCsrActionSheet'))
   .addSeparator()
   .addSubMenu(ui.createMenu('Scheduler')
-              .addItem('Update SSCD Sheet...',    'updateSSCDSheet')
+              .addItem('Update SSCD Sheet...',    'updateSscdSheet')
               .addItem('Backup SSCD...', 'backupSscd'))
   .addToUi();
 }
@@ -29,7 +29,7 @@ function triggerEveryHour() {
   // check for new data and refresh SSCD current sheet
 }
 
-function triggerEveryDayAt2AM() {
+function triggerEveryDayAt2Am() {
   var sscd = SpreadsheetApp.getActive();
   var sscd_sheet = sscd.getSheetByName(sscd_sheet_name)
   normalizeFontOfRange(sscd_sheet, sscd_edit_range);

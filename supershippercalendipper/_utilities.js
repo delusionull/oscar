@@ -62,7 +62,7 @@ function say(msg) {
   ui.alert(msg);
 }
 
-// Convert a one or two digit letter to its number
+// Convert a one or two digit column letter to its column number
 function toNum(letter) {
   var left_digit_val = 0;
   if(letter.length == 2) {
@@ -165,6 +165,10 @@ function testStuff() {  // test comment
   
   
   var sscd = SpreadsheetApp.getActive();
+  var dr_sheet  = sscd.getSheetByName(drsheet_name);
+  var cell      = dr_sheet.getRange("F223");
+  Logger.log((cell.getValue().getMonth() + 1) + "/" + cell.getValue().getDate());
+  
 //  var ss = SpreadsheetApp.getActiveSpreadsheet();
 //  var sheet = ss.getSheets()[0];
 //  var range = sheet.getRange(1, 1, 3, 3);
@@ -177,14 +181,14 @@ function testStuff() {  // test comment
 //    }
 //  }
 
-  checkForSscdBloat(sscd);
+//  checkForSscdBloat(sscd);
   
 //  var vars_sheet = sscd.getSheetByName("vars")
 //  var last_timestamp = vars_sheet.getRange(vars_sheet_last_timestamp).getValue();
 
 //  var sscd_name = sscd.getName();
 //  sscd.rename(sscd_name.replace(/; .*/, "; ") + "3rd test");
-  var sscd_sheet = sscd.getSheetByName("current");
+//  var sscd_sheet = sscd.getSheetByName("current");
 //  fancySort(sscd_sheet);
 //  sscd_sheet.activate();
 //  var test_sheet = sscd.getActiveSheet();

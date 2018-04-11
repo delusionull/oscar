@@ -24,17 +24,6 @@ function backupSheet(sheet, name) {
   backup.hideSheet();
 }
 
-//function backupSheet(sheet, name) {
-//  sheet.hideSheet();
-//  unHideAllRows(sheet)
-//
-//  var backup = sheet.copyTo(sheet.getParent());
-//  backup.setName(name + "_bak").activate();
-//  backup.getParent().moveActiveSheet(2);
-//  backup.showSheet();
-//  backup.hideSheet();
-//}
-
 function importNewDataFromGdrive(incoming_sheet, sscd_data_file_name) {
   var root_folder = DriveApp.getRootFolder();
   var sscd_data_file = root_folder.getFilesByName(sscd_data_file_name).next();
@@ -54,42 +43,61 @@ function importNewDataFromGdrive(incoming_sheet, sscd_data_file_name) {
   sscd_folder.addFile(sscd_data_file);
 }
 
-function updateAddOrRemoveRows(s_sheet, i_sheet, s_sos, i_sos) {
-  var sscd_first_empty_row = s_sheet.getLastRow();
-  var sscd_index;
-  var incoming_index;
-  var first_update_range_start_num  = toNum(shipdate_column);
-  var first_update_range_end_num    = toNum(apdmove_column);
-  var first_update_range_size       = (first_update_range_end_num - first_update_range_start_num) + 1;
-  var second_update_range_start_num = toNum(material_pos_column);
-  var second_update_range_end_num   = toNum(sales_column);
-  var second_update_range_size      = (second_update_range_end_num - second_update_range_start_num) + 1;
+function updateAddOrRemoveRows(s_sheet, i_sheet, d_sheet, s_sos, i_sos) {
+  var sscd_index, incoming_index;
+  var first_null_row = s_sheet.getLastRow();
+  var range0_start   = toNum(sales_order_column);
+  var range0_end     = toNum(sscd_last_column);
+  var range0_size    = (range0_end - range0_start) + 1;
+  var range1_start   = toNum(shipdate_column);
+  var range1_end     = toNum(apdmove_column);
+  var range1_size    = (range1_end - range1_start) + 1;
+  var range2_start   = toNum(material_pos_column);
+  var range2_end     = toNum(sales_column);
+  var range2_size    = (range2_end - range2_start) + 1;
+  var all_drs        = d_sheet.getRange(2, 1, d_sheet.getLastRow() - 1, 6).getValues();
 
   for (var i in i_sos) {
     sscd_index = ArrayLib.indexOf(s_sos, 0, i_sos[i][0]);
-    if ((sscd_index >= 0)) {  // update row
-      i_sheet.getRange(+i + 1, first_update_range_start_num, 1, first_update_range_size)
-        .copyValuesToRange(s_sheet, first_update_range_start_num, first_update_range_end_num, sscd_index+2, sscd_index+2);
-      i_sheet.getRange(+i + 1, second_update_range_start_num, 1, second_update_range_size)
-        .copyValuesToRange(s_sheet, second_update_range_start_num, second_update_range_end_num, sscd_index+2, sscd_index+2);
-    } else {  // add row
-      sscd_first_empty_row++;
-      i_sheet.getRange(+i + 1, toNum(sales_order_column), 1, toNum(sscd_last_column))
-        .copyValuesToRange(s_sheet, toNum(sales_order_column), toNum(sscd_last_column), sscd_first_empty_row, sscd_first_empty_row);
-      insertLookupFormulas(s_sheet, sscd_first_empty_row);
+    if ((sscd_index >= 0)) {  // update a row
+      i_sheet.getRange(+i + 1, range1_start, 1, range1_size).copyValuesToRange(s_sheet, range1_start, range1_end, sscd_index+2, sscd_index+2);
+      i_sheet.getRange(+i + 1, range2_start, 1, range2_size).copyValuesToRange(s_sheet, range2_start, range2_end, sscd_index+2, sscd_index+2);
+      insertDrsNote(s_sheet, all_drs, i_sos[i][0], sscd_index+2);
+    } else {  // add a row
+      first_null_row++;
+      i_sheet.getRange(+i + 1, range0_start, 1, range0_size).copyValuesToRange(s_sheet, range0_start, range0_end, first_null_row, first_null_row);
+      insertLookupFormulas(s_sheet, first_null_row);
+      insertDrsNote(s_sheet, all_drs, i_sos[i][0], first_null_row);
     }
-    // NEW FEATURE:
-    // For each sales order (i), parse DRsheet, returning array of DR's, placing /n-
-    // separated list in "Material PO" cell of the respective sales order.
   }
   for (var i in s_sos) {
     incoming_index = ArrayLib.indexOf(i_sos, 0, s_sos[i][0]);
-    if (incoming_index == -1) {  // clear row
-      // Comment clearing does not work, and Google doesn't care:
-      // https://issuetracker.google.com/issues/36756650
-      s_sheet.getRange(+i + 2, 1, 1, toNum(sscd_last_column)).clearContent().clearNote().clear({commentsOnly: true}).setBackground("white");
+    if (incoming_index == -1) {  // clear a row
+      // Comment clearing does not work, and Google doesn't care: https://issuetracker.google.com/issues/36756650
+      s_sheet.getRange(+i + 2, 1, 1, toNum(sscd_last_column)).clearContent()
+                                                             .clearNote()
+                                                             .clear({commentsOnly: true})
+                                                             .setBackground("white");
     }
   }
+}
+
+//function insertDrsNote() {
+function insertDrsNote(s_sheet, all_drs, sales_order, row) {
+  var drs      = ArrayLib.filterByText(all_drs, 0, sales_order);
+  var drs_only = [];
+  
+  if (drs.length > 0) {
+    for (var i = 0, len = drs.length; i < len; i++) {
+      drs_only.push(                        "DR" + drs[i][1] +
+                    (drs[i][2] !== null && drs[i][2] !== '' ? ": "     + drs[i][2] : "") +
+                    (drs[i][3] !== null && drs[i][3] !== '' ? " L"     + drs[i][3] : "") +
+                    (drs[i][4] !== null && drs[i][4] !== '' ? "; "     + drs[i][4] : "") +
+                    (drs[i][5] instanceof Date              ? " ETA "  + (drs[i][5].getMonth() + 1) + "/" + drs[i][5].getDate() : ""));
+    }
+  }
+  var cell = s_sheet.getRange(material_pos_column + row);
+  cell.setNote(drs_only.join("\n"));
 }
 
 function setVarsSheetValues(sheet, last, curr) {

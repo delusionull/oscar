@@ -5,6 +5,10 @@
       "userSymbol": "ArrayLib",
       "libraryId": "1r9wNWbta3ebuYL4ENAdIp4UYKmyNiWf1AqsXYzfXduRHhTZEeTxS9MhZ",
       "version": "23"
+    }, {
+      "userSymbol": "underscoreGS",
+      "libraryId": "1yzaSmLB2aNXtKqIrSZ92SA4D14xPNdZOo3LQRH2Zc6DK6gHRpRK_StrT",
+      "version": "3"
     }]
   },
   "exceptionLogging": "STACKDRIVER"
