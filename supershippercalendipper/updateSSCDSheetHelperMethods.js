@@ -93,7 +93,7 @@ function insertDrsNote(s_sheet, all_drs, sales_order, row) {
                     (drs[i][2] !== null && drs[i][2] !== '' ? ": "     + drs[i][2] : "") +
                     (drs[i][3] !== null && drs[i][3] !== '' ? " L"     + drs[i][3] : "") +
                     (drs[i][4] !== null && drs[i][4] !== '' ? "; "     + drs[i][4] : "") +
-                    (drs[i][5] instanceof Date              ? " ETA "  + (drs[i][5].getMonth() + 1) + "/" + drs[i][5].getDate() : ""));
+                    (drs[i][5] instanceof Date              ? " - "    + (drs[i][5].getMonth() + 1) + "/" + drs[i][5].getDate() : ""));
     }
   }
   var cell = s_sheet.getRange(material_pos_column + row);
