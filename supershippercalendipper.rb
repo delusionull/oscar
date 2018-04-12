@@ -118,7 +118,7 @@ def get_flags(so)
 end
 
 def gross_margin(revenue, cost)
-  gm = revenue.nonzero? ? (cost ? 100 * (revenue - cost) / revenue : 0) : 0
+  gm = revenue.to_f.nonzero? ? (cost ? 100 * (revenue.to_f - cost) / revenue.to_f : 0) : 0
   return (gm).round(2)
   #return (gm).round
 end
@@ -216,7 +216,7 @@ open_sales_orders.each do |line|
   so_info << "," * 9
   so_info << "#{pos_with_num_and_date*' '},"
   so_info << "#{materials_with_num*' '},"
-  so_info << "$#{line[:Dollars] < 1 ? -(line[:Cost]) : line[:Dollars]}," # if "line[:Dollars]" < $1 then display neg (-)"line[:Cost]"
+  so_info << "$#{line[:Dollars].to_f < 1 ? -(line[:Cost].to_s.to_f) : line[:Dollars].to_f}," # if "line[:Dollars]" < $1 then display neg (-)"line[:Cost]"
   so_info << "#{weight},"
   so_info << "#{line[:ShipVia].to_s.tr_s(' ,', ' ').strip},"
   so_info << "#{line[:City].to_s.tr_s(' ,', ' ').strip},"
