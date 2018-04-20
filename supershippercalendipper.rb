@@ -20,6 +20,7 @@ so_shipping_qry =
          eh.SalesOrderNumber                                              AS SalesOrder,
          eh.orderstatus                                                   AS Status,
          eh.TaxExemptNumber                                               AS APDMove,
+         eh.FOB                                                           AS SOFlag,
          cm.CustomerType                                                  AS Flag,
          cm.SalesPersonCode                                               AS SalesPerson,
          eh.NonTaxableAmount                                              AS Dollars,
@@ -63,7 +64,8 @@ so_shipping_qry =
              eh.ShipToCity,
              eh.ShipToState,
              eh.TaxExemptNumber,
-             eh.CustomerPONumber
+             eh.CustomerPONumber,
+             eh.FOB
 
    ORDER  BY eh.shipexpiredate,
              eh.shipviarate,
@@ -131,6 +133,7 @@ open_sales_orders.each do |line|
   flag_hold = ''
   flag_notinschedule = ''
   flag_fsc = ''
+  flag_so = ''
 
   pos       = purchase_orders
                .where(Sequel.like(:Comment, "%#{line[:SalesOrder]}%"))
@@ -169,6 +172,7 @@ open_sales_orders.each do |line|
   end
 #line[:SalesOrder].to_s.strip.match(/^[DK]\d{6}$/)
   flag_hold = line[:Flag].to_s.strip.match(/^[1234]$/)
+  flag_so = line[:SOFlag].to_s.strip.match(/^[b-zB-Z]+;$/).to_s.downcase.match(/\w*/)
   flag_notinschedule = "8" unless ( line[:SalesOrder][0] == "E" or so_layup_lines_exist_in_schedule?(line[:SalesOrder], layup_items) )
   flag_fsc = "5" if fsc_so?(line[:SalesOrder], fsc_orders)
 
@@ -177,7 +181,8 @@ open_sales_orders.each do |line|
         flag_materialcost +
         flag_notinschedule +
         flag_waiting_for_material +
-        flag_overdue_po
+        flag_overdue_po +
+        flag_so.to_s
   flg = flg + '_' unless flg.empty?
 
   #flg = get_flags(line[:SalesOrder], line[:Hold].to_s.strip.match(/^[123]$/)})
