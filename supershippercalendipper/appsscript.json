@@ -11,5 +11,12 @@
       "version": "3"
     }]
   },
-  "exceptionLogging": "STACKDRIVER"
+  "exceptionLogging": "STACKDRIVER",
+  "sheets": {
+    "macros": [{
+      "menuName": "test",
+      "functionName": "test",
+      "defaultShortcut": "Ctrl+Alt+Shift+1"
+    }]
+  }
 }

@@ -48,14 +48,25 @@ function getSheetNamesThatEndWithBak(sheets) {
 function checkForSscdBloat(sscd) {
   var sheets = sscd.getSheets();
   var bak_sheet_names = getSheetNamesThatEndWithBak(sheets);
-  if (bak_sheet_names.length > 20) {
+  if (bak_sheet_names.length > bak_sheets_limit_number) {
+    say("    ***NOPE NOPE NOPE***\n\n" +
+        "Sorry! You can't skip that backup any more!\n\n" +
+        "The number of backup tabs has increased to: *** " + bak_sheet_names.length + " ***\n" +
+        "This many backup tabs will slow the SSCD down.\n\n" +
+        "Run the  Backup SSCD  process, located in the menu under\n" +
+        "----SSCD Tools\n" +
+        "-------->Scheduler.\n\n" +
+        "Then, you may run the SSCD update.")
+    return false;
+  }
+  if (bak_sheet_names.length > bak_sheets_warn_number) {
     say("    ***BACKUP NEEDED***\n\n" +
         "Please run backup after update is complete!\n\n" +
-        "The number of backup sheets has increased to " + bak_sheet_names.length + ".\n" +
-        "This many backup sheets will slow the SSCD down.\n" +
+        "The number of backup tabs has increased to: *** " + bak_sheet_names.length + " ***\n" +
+        "This many backup tabs will slow the SSCD down.\n\n" +
         "After the SSCD update process has completed, please\n" +
         "run the  Backup SSCD  process, located in the menu under\n" +
-        "--SSCD Tools\n" +
-        "--->Scheduler.")
+        "----SSCD Tools\n" +
+        "-------->Scheduler.")
   }
 }

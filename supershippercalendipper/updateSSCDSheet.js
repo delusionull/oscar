@@ -8,7 +8,7 @@ function updateSscdSheet() {
   var vars_sheet     = sscd.getSheetByName(vars_sheet_name);
   var dr_sheet       = sscd.getSheetByName(drsheet_name);
   
-  checkForSscdBloat(sscd);
+  if (checkForSscdBloat(sscd) == false) {return};
 
   if (checkForNewData() == false) {return};
   sscdSheetIsFirst(sscd, sscd_sheet);

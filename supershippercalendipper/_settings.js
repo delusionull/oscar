@@ -16,6 +16,9 @@ var drsheet_name                = 'DRsheet';
 var first_edit_column           = 9;
 var num_of_edit_columns         = 9;
 
+var bak_sheets_warn_number      = 15;
+var bak_sheets_limit_number     = 20;
+
 var sscd_edit_range             = "I2:Q";
 var sscd_last_column            = "AB";
 

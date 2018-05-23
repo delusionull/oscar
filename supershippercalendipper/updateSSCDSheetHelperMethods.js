@@ -39,8 +39,8 @@ function importNewDataFromGdrive(incoming_sheet, sscd_data_file_name) {
   }
   
   sscd_data_file.setName(sscd_data_file_name + "_" + isoDateString(new Date()) + "_" + isoTimeString() + ".bak");
-  root_folder.removeFile(sscd_data_file);
   sscd_folder.addFile(sscd_data_file);
+  //root_folder.removeFile(sscd_data_file);
 }
 
 function updateAddOrRemoveRows(s_sheet, i_sheet, d_sheet, s_sos, i_sos) {
