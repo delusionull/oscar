@@ -134,6 +134,40 @@ def gross_margin(revenue, cost)
   #return (gm).round
 end
 
+
+
+
+
+
+
+def qty_sched(so, line, layup_lines, layup_items_in_press)
+  layup_ids = layup_lines
+    .where(JobSalesOrderNo: so)
+    .where(Sequel.like(:LayupStagerNote, "#{line}%"))
+    .select_map(:LayupID)
+  layup_items_in_press.where(LayupID: layup_ids).sum(:LayupItemXPressQnty).to_i
+end
+
+layup_items = DB_SCHED[:tblLayupItems].join(:tblJobs, :JobID => :JobID)
+layup_items_in_press = DB_SCHED[:tblLayupItemXPress]
+
+layup_lines = layup_items
+  .select(:LayupID, :LayupQnty, :LayupStagerNote)
+  .where(
+    (Sequel[{LayupExclude: false}]) |
+    (
+      Sequel[{LayupExclude: true}] &
+      Sequel.like(:LayupInstructions, '%SEND%')
+    )
+  )
+
+
+
+
+
+
+
+
 open_sales_orders.each do |line|
   flg = ''
   flag_overdue_po = ''
@@ -143,9 +177,44 @@ open_sales_orders.each do |line|
   flag_notinschedule = ''
   flag_fsc = ''
   flag_so = ''
+  so_num = line[:SalesOrder]
+
+
+
+
+
+
+  lines_and_qty = {}
+  layup_lines.where(JobSalesOrderNo: so_num).each do |x|
+    lines_and_qty.merge!( {"#{x[:LayupStagerNote][0..3]}" => x[:LayupQnty]} ) {
+      |k, a_value, b_value| a_value + b_value
+    }
+  end
+
+  lines_with_done_and_total = []
+  flag_all_lines_complete = 'c' unless lines_and_qty.empty?
+  lines_and_qty.each do |lin_qty|
+    qty_in_schedule = qty_sched(so_num, lin_qty[0], layup_lines, layup_items_in_press)
+    flag_all_lines_complete = '' if qty_in_schedule < lin_qty[1]
+    lines_with_done_and_total <<
+      "#{lin_qty[0]} #{qty_in_schedule}/#{lin_qty[1]}"
+  end
+
+
+
+
+
+
+
+
+
+
+
+
 
   pos       = purchase_orders
-               .where(Sequel.like(:Comment, "%#{line[:SalesOrder]}%"))
+               .where{(Sequel.like(:Comment, "%#{so_num[0..4]}%[{,]#{so_num[5..6]}%")) |
+                      (Sequel.like(:Comment, "%#{so_num}%"))}
                .select_map([:PurchaseOrderNumber])
 
   pos_with_num_and_date = []
@@ -171,7 +240,7 @@ open_sales_orders.each do |line|
                         .where(:SalesOrderNumber => "#{line[:SalesOrder]}")
                         .where(:ItemNumber => mat)
                         .select_map(:ItemNumber)[0]
-      materials_with_num << "#{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}#{material_is_on_so ? '@$' + cost + 'ea' : '[not on SO]'})"
+      materials_with_num << "#{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}#{material_is_on_so ? '@$' + cost.to_s + 'ea' : '[not on SO]'})"
       #materials_with_num << "#{index+1};#{mat.strip};\(#{qty_rec}/#{qty_ord}\)"
       flag_waiting_for_material = "9" if qty_rec < qty_ord
       flag_materialcost = "6" if cost.to_i > 150
@@ -191,7 +260,8 @@ open_sales_orders.each do |line|
         flag_notinschedule +
         flag_waiting_for_material +
         flag_overdue_po +
-        flag_so.to_s
+        flag_so.to_s +
+        flag_all_lines_complete.to_s
   flg = flg + '_' unless flg.empty?
 
   #flg = get_flags(line[:SalesOrder], line[:Hold].to_s.strip.match(/^[123]$/)})
@@ -206,7 +276,7 @@ open_sales_orders.each do |line|
   # p sales_order_last_material_eta
   # abort
   customer = "#{line[:Customer].to_s.tr_s(' ,', ' ').strip}"
-  customer_po = "#{line[:CustomerPO].to_s.strip.match(/[-A-Za-z0-9_]+/)}"
+  customer_po = "#{line[:CustomerPO].to_s.strip.match(/[-A-Za-z0-9_ ]+/)}"
   weight = "#{line[:SalesOrder].to_s.strip
     .match(/^[DK]\d{6}$/) ? line[:Weight] : 0}"
   apdmove = /(?<date>\d{2}\/\d{2}\/\d{2})(-(?<code>\w+))?/
@@ -229,6 +299,7 @@ open_sales_orders.each do |line|
   so_info << "#{margin}%,"
   so_info << "#{(customer + (' ' + ' ' * (16 - customer.length)) + customer_po).strip},"
   so_info << "#{apd_date}_#{apd_code},"
+  so_info << "#{lines_with_done_and_total*'        '},"
   so_info << "," * 9
   so_info << "#{pos_with_num_and_date*' '},"
   so_info << "#{materials_with_num*' '},"

@@ -50,7 +50,7 @@ function updateAddOrRemoveRows(s_sheet, i_sheet, d_sheet, s_sos, i_sos) {
   var range0_end     = toNum(sscd_last_column);
   var range0_size    = (range0_end - range0_start) + 1;
   var range1_start   = toNum(shipdate_column);
-  var range1_end     = toNum(apdmove_column);
+  var range1_end     = toNum(done_column);
   var range1_size    = (range1_end - range1_start) + 1;
   var range2_start   = toNum(material_pos_column);
   var range2_end     = toNum(sales_column);
@@ -147,7 +147,7 @@ function setReferenceCells(sscd_sheet) {
 }
 
 function fancySort(sheet_to_sort) {
-  var ss_range = sheet_to_sort.getRange("A2:AB");
+  var ss_range = sheet_to_sort.getRange("A2:" + sscd_last_column);
   ss_range.sort([{column: toNum(shipdate_column),    ascending: true},
                  {column: toNum(shipvia_column),     ascending: true},
                  {column: toNum(so_type_column),     ascending: true},

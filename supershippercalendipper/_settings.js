@@ -13,14 +13,17 @@ var csr_action_sheet_name       = 'CSR Action Sheet';
 var lookitme_sheet_name         = 'CHANGELOG';
 var drsheet_name                = 'DRsheet';
 
-var first_edit_column           = 9;
-var num_of_edit_columns         = 9;
-
 var bak_sheets_warn_number      = 15;
 var bak_sheets_limit_number     = 20;
 
-var sscd_edit_range             = "I2:Q";
-var sscd_last_column            = "AB";
+//var first_edit_column           = 9;
+var first_edit_column           = 10;
+var num_of_edit_columns         = 9;
+
+//var sscd_edit_range             = "I2:Q";
+var sscd_edit_range             = "J2:Q";
+//var sscd_last_column            = "AB";
+var sscd_last_column            = "AC";
 
 var sales_order_column          = "A";
 var changes_column              = "B";
@@ -29,28 +32,43 @@ var so_type_column              = "D";
 var gross_margin_column         = "F";
 var customer_column             = "G";
 var apdmove_column              = "H";
-var mtg_notes_column            = "L";
-var csr_notes_column            = "O";
-var shipping_notes_column       = "P";
-var purch_notes_column          = "Q";
-var material_pos_column         = "R";
-var revenue_column              = "T";
-var weight_column               = "U";
-var shipvia_column              = "V";
-var sales_column                = "Y";
-var weightperdate_column        = "Z";
-var numeric_so_column           = "AB";
+
+var done_column                 = "I";
+
+//var mtg_notes_column            = "L";
+var mtg_notes_column            = "M";
+//var csr_notes_column            = "O";
+var csr_notes_column            = "P";
+//var shipping_notes_column       = "P";
+var shipping_notes_column       = "Q";
+//var purch_notes_column          = "Q";
+var purch_notes_column          = "R";
+//var material_pos_column         = "R";
+var material_pos_column         = "S";
+//var revenue_column              = "T";
+var revenue_column              = "U";
+//var weight_column               = "U";
+var weight_column               = "V";
+//var shipvia_column              = "V";
+var shipvia_column              = "W";
+//var sales_column                = "Y";
+var sales_column                = "Z";
+//var weightperdate_column        = "Z";
+var weightperdate_column        = "AA";
+//var numeric_so_column           = "AB";
+var numeric_so_column           = "AC";
+
 
 var vars_sheet_today_date       = "B1";
 var vars_sheet_recent_bak       = "$B$2";
 var vars_sheet_last_timestamp   = "B3";
 
-var override_on                 = false;
+var override_on                 = true;
 var sscd_maint_coders           = ["***REMOVED***", "***REMOVED***", "***REMOVED***"]; 
 var sscd_editors                = ["***REMOVED***", "***REMOVED***", "***REMOVED***", "***REMOVED***", "***REMOVED***"];
 var sscd_backups_owner          = "***REMOVED***";
 var csr_editors                 = ["***REMOVED***", "***REMOVED***", "***REMOVED***", "***REMOVED***"];
-var shipping_editors            = ["***REMOVED***", "***REMOVED***", "***REMOVED***"];
+var shipping_editors            = ["***REMOVED***", "***REMOVED***"];
 var purch_editors               = ["***REMOVED***", "***REMOVED***"];
 
 // Your name doesn't need to be in here:
