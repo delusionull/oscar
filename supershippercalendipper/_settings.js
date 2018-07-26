@@ -16,13 +16,10 @@ var drsheet_name                = 'DRsheet';
 var bak_sheets_warn_number      = 15;
 var bak_sheets_limit_number     = 20;
 
-//var first_edit_column           = 9;
-var first_edit_column           = 10;
+var first_edit_column           = 9;
 var num_of_edit_columns         = 9;
 
-//var sscd_edit_range             = "I2:Q";
-var sscd_edit_range             = "J2:Q";
-//var sscd_last_column            = "AB";
+var sscd_edit_range             = "I2:Q";
 var sscd_last_column            = "AC";
 
 var sales_order_column          = "A";
@@ -32,30 +29,17 @@ var so_type_column              = "D";
 var gross_margin_column         = "F";
 var customer_column             = "G";
 var apdmove_column              = "H";
-
-var done_column                 = "I";
-
-//var mtg_notes_column            = "L";
-var mtg_notes_column            = "M";
-//var csr_notes_column            = "O";
-var csr_notes_column            = "P";
-//var shipping_notes_column       = "P";
-var shipping_notes_column       = "Q";
-//var purch_notes_column          = "Q";
-var purch_notes_column          = "R";
-//var material_pos_column         = "R";
+var mtg_notes_column            = "L";
+var csr_notes_column            = "O";
+var shipping_notes_column       = "P";
+var purch_notes_column          = "Q";
+var done_column                 = "R";
 var material_pos_column         = "S";
-//var revenue_column              = "T";
 var revenue_column              = "U";
-//var weight_column               = "U";
 var weight_column               = "V";
-//var shipvia_column              = "V";
 var shipvia_column              = "W";
-//var sales_column                = "Y";
 var sales_column                = "Z";
-//var weightperdate_column        = "Z";
 var weightperdate_column        = "AA";
-//var numeric_so_column           = "AB";
 var numeric_so_column           = "AC";
 
 

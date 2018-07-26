@@ -299,8 +299,8 @@ open_sales_orders.each do |line|
   so_info << "#{margin}%,"
   so_info << "#{(customer + (' ' + ' ' * (16 - customer.length)) + customer_po).strip},"
   so_info << "#{apd_date}_#{apd_code},"
-  so_info << "#{lines_with_done_and_total*'        '},"
   so_info << "," * 9
+  so_info << "#{lines_with_done_and_total*'        '},"
   so_info << "#{pos_with_num_and_date*' '},"
   so_info << "#{materials_with_num*' '},"
   so_info << "$#{line[:Dollars].to_f < 1 ? -(line[:Cost].to_s.to_f) : line[:Dollars].to_f}," # if "line[:Dollars]" < $1 then display neg (-)"line[:Cost]"
