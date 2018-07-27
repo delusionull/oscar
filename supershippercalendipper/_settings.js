@@ -20,6 +20,7 @@ var first_edit_column           = 9;
 var num_of_edit_columns         = 9;
 
 var sscd_edit_range             = "I2:Q";
+var sscd_first_column           = "A";
 var sscd_last_column            = "AC";
 
 var sales_order_column          = "A";
@@ -42,6 +43,10 @@ var sales_column                = "Z";
 var weightperdate_column        = "AA";
 var numeric_so_column           = "AC";
 
+var update_range1_start_column  = shipdate_column
+var update_range1_end_column    = apdmove_column
+var update_range2_start_column  = done_column
+var update_range2_end_column    = sales_column
 
 var vars_sheet_today_date       = "B1";
 var vars_sheet_recent_bak       = "$B$2";
