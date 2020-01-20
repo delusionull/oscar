@@ -2,7 +2,7 @@ function userConfirmBackup() {
   var ui = SpreadsheetApp.getUi();
   var response = ui.alert("Confirm backup",
                           "This will:\n" +
-                          "  1\) Create a backup copy of the SuperShipperCalendipper\n" +
+                          "  1\) Create a backup copy of OSCAR\n" +
                           "  2\) Assign appropriate ownership and permissions to the backup\n" +
                           "  3\) Remove all but the two latest *current* sheet backups\n" +
                           "Do you want to continue?",
@@ -11,27 +11,27 @@ function userConfirmBackup() {
   return (response == ui.Button.YES ? true : false)
 }
 
-function createSscdBackup(sscd) {
-  var sscd_id = sscd.getId();
-  var file = DriveApp.getFileById(sscd_id);
+function createOscarBackup(oscar) {
+  var oscar_id = oscar.getId();
+  var file = DriveApp.getFileById(oscar_id);
   var backup_file;
-  backup_file = file.makeCopy(lw_site_location + ' SSCD Backup: ' + isoDateString(_, 1));
-  setSscdBackupPerms(backup_file)
+  backup_file = file.makeCopy(lw_site_location + ' OSCAR Backup: ' + isoDateString(_, 1));
+  setOscarBackupPerms(backup_file)
   return backup_file;
 }
 
-function setSscdBackupPerms(sscd_backup) {
-  sscd_backup.addEditors(sscd_editors);
-  sscd_backup.setOwner(sscd_backups_owner);
+function setOscarBackupPerms(oscar_backup) {
+  oscar_backup.addEditors(oscar_editors);
+  oscar_backup.setOwner(oscar_backups_owner);
 }
 
-function deleteAllButTwoBakSheets(sscd) {
-  var sheets = sscd.getSheets();
+function deleteAllButTwoBakSheets(oscar) {
+  var sheets = oscar.getSheets();
   var bak_sheet_names = getSheetNamesThatEndWithBak(sheets);
   var sheet_to_delete;
   for (i = 0; i < bak_sheet_names.length -2; i++) {
-    sheet_to_delete = sscd.getSheetByName(bak_sheet_names[i]);
-    sscd.deleteSheet(sheet_to_delete);
+    sheet_to_delete = oscar.getSheetByName(bak_sheet_names[i]);
+    oscar.deleteSheet(sheet_to_delete);
   }
 }
 
@@ -45,28 +45,28 @@ function getSheetNamesThatEndWithBak(sheets) {
   return bak_sheets.sort();
 }
 
-function checkForSscdBloat(sscd) {
-  var sheets = sscd.getSheets();
+function checkForOscarBloat(oscar) {
+  var sheets = oscar.getSheets();
   var bak_sheet_names = getSheetNamesThatEndWithBak(sheets);
   if (bak_sheet_names.length > bak_sheets_limit_number) {
     say("    ***NOPE NOPE NOPE***\n\n" +
         "Sorry! You can't skip that backup any more!\n\n" +
         "The number of backup tabs has increased to: *** " + bak_sheet_names.length + " ***\n" +
-        "This many backup tabs will slow the SSCD down.\n\n" +
-        "Run the  Backup SSCD  process, located in the menu under\n" +
-        "----SSCD Tools\n" +
+        "This many backup tabs will slow OSCAR down.\n\n" +
+        "Run the  Backup OSCAR  process, located in the menu under\n" +
+        "----OSCAR Tools\n" +
         "-------->Scheduler.\n\n" +
-        "Then, you may run the SSCD update.")
+        "Then, you may run the OSCAR update.")
     return false;
   }
   if (bak_sheet_names.length > bak_sheets_warn_number) {
     say("    ***BACKUP NEEDED***\n\n" +
         "Please run backup after update is complete!\n\n" +
         "The number of backup tabs has increased to: *** " + bak_sheet_names.length + " ***\n" +
-        "This many backup tabs will slow the SSCD down.\n\n" +
-        "After the SSCD update process has completed, please\n" +
-        "run the  Backup SSCD  process, located in the menu under\n" +
-        "----SSCD Tools\n" +
+        "This many backup tabs will slow the OSCAR down.\n\n" +
+        "After the OSCAR update process has completed, please\n" +
+        "run the  Backup OSCAR  process, located in the menu under\n" +
+        "----OSCAR Tools\n" +
         "-------->Scheduler.")
   }
 }

@@ -1,69 +1,94 @@
-// Global SSCD settings go here.
+// Global OSCAR settings go here.
 
 var lw_site_location            = "Dallas";
 
-var sscd_index                  = 1;
+var oscar_index                 = 1;
 
-var sscd_data_file_name         = "sscd.csv";
-var sscd_sheet_name             = "current";
+var oscar_data_file_name        = "oscar.csv";
+var oscar_sheet_name            = "current";
 var incoming_sheet_name         = "incoming";
 var vars_sheet_name             = "vars";
 var components_sheet_name       = "Components";
 var csr_action_sheet_name       = 'CSR Action Sheet';
-var lookitme_sheet_name         = 'CHANGELOG';
+var lookatme_sheet_name         = 'CHANGELOG';
 var drsheet_name                = 'DRsheet';
+var issues_sheet_name           = 'Issues';
+var issues_log_sheet_name       = 'Issues Log';
 
-var bak_sheets_warn_number      = 15;
+var bak_sheets_warn_number      = 18;
 var bak_sheets_limit_number     = 20;
 
-var first_edit_column           = 9;
-var num_of_edit_columns         = 9;
+var sales_order_col             = "A";
+var so_suffix_col               = "B";
+var shipdate_col                = "C";
+var so_type_col                 = "D";
+var gross_margin_col            = "F";
+var customer_col                = "G";
+var apdmove_col                 = "H";
+var status1_col                 = "I";
+var mtg_notes_col               = "L";
+var ops_col                     = "N";
+var csr_notes_col               = "O";
+var shipping_notes_col          = "P";
+var purch_notes_col             = "Q";
+var scheduled_col               = "R";
+var material_pos_col            = "S";
+var revenue_col                 = "U";
+var weight_col                  = "V";
+var shipvia_col                 = "W";
+var sales_col                   = "Z";
+var weightperdate_col           = "AA";
+var reference_cell_col          = "AB";
+var numeric_so_col              = "AC";
 
-var sscd_edit_range             = "I2:Q";
-var sscd_first_column           = "A";
-var sscd_last_column            = "AC";
+var oscar_first_edit_col        = status1_col;
+var oscar_last_edit_col         = purch_notes_col;
 
-var sales_order_column          = "A";
-var changes_column              = "B";
-var shipdate_column             = "C";
-var so_type_column              = "D";
-var gross_margin_column         = "F";
-var customer_column             = "G";
-var apdmove_column              = "H";
-var mtg_notes_column            = "L";
-var csr_notes_column            = "O";
-var shipping_notes_column       = "P";
-var purch_notes_column          = "Q";
-var done_column                 = "R";
-var material_pos_column         = "S";
-var revenue_column              = "U";
-var weight_column               = "V";
-var shipvia_column              = "W";
-var sales_column                = "Z";
-var weightperdate_column        = "AA";
-var numeric_so_column           = "AC";
+var oscar_edit_range            = oscar_first_edit_col + "2:" + oscar_last_edit_col;
+var oscar_first_col             = sales_order_col;
+var oscar_last_col              = "AC";
 
-var update_range1_start_column  = shipdate_column
-var update_range1_end_column    = apdmove_column
-var update_range2_start_column  = done_column
-var update_range2_end_column    = sales_column
+var numerical_first_edit_col    = toNum(oscar_first_edit_col);
+var num_of_edit_cols            = toNum(oscar_last_edit_col) - toNum(oscar_first_edit_col) + 1;
+
+var update_range1_start_col     = so_suffix_col
+var update_range1_end_col       = apdmove_col
+var update_range2_start_col     = scheduled_col
+var update_range2_end_col       = sales_col
+
+var isu_sales_order_col         = "A";
+var isu_customer_col            = "B";
+var isu_ship_date_col           = "C";
+var isu_issue_col               = "D";
+var isu_reply_col               = "E";
+var isu_resolved_col            = "F";
+
+var isu_log_resolved_time_col   = "G";
+
+var isu_sheet_last_col          = "J";
 
 var vars_sheet_today_date       = "B1";
 var vars_sheet_recent_bak       = "$B$2";
 var vars_sheet_last_timestamp   = "B3";
 
-var override_on                 = true;
-var sscd_maint_coders           = ["***REMOVED***", "***REMOVED***", "***REMOVED***"]; 
-var sscd_editors                = ["***REMOVED***", "***REMOVED***", "***REMOVED***", "***REMOVED***", "***REMOVED***"];
-var sscd_backups_owner          = "***REMOVED***";
+var override_on                 = false;
+var oscar_maint_coders          = ["***REMOVED***", "***REMOVED***"]; 
+var oscar_editors               = ["***REMOVED***", "***REMOVED***", "***REMOVED***"];
+var oscar_backups_owner         = "***REMOVED***";
 var csr_editors                 = ["***REMOVED***", "***REMOVED***", "***REMOVED***", "***REMOVED***"];
 var shipping_editors            = ["***REMOVED***", "***REMOVED***"];
-var purch_editors               = ["***REMOVED***", "***REMOVED***"];
+var purch_editors               = ["***REMOVED***"];
 
 // Your name doesn't need to be in here:
-var sscd_test_coders            = ["***REMOVED***"];
+var oscar_test_coders           = ["***REMOVED***"];
 // Nor here:
-var sscd_test_coder             = "***REMOVED***";
+var oscar_test_coder            = "***REMOVED***";
 
 // Number of holidays since last working day 
 var holiday                     = 0;
+
+// Some neat colors
+var aero_blue                   = "#C0FFEE";
+var conifer                     = "#BADA55";
+var key_lime_pie                = "#B0BB1E";
+var thistle                     = "#DEC0DE";

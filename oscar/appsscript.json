@@ -14,9 +14,9 @@
   "exceptionLogging": "STACKDRIVER",
   "sheets": {
     "macros": [{
-      "menuName": "test",
-      "functionName": "test",
-      "defaultShortcut": "Ctrl+Alt+Shift+1"
+      "menuName": "jump to issue on other tab",
+      "functionName": "jumptoissueonothertab",
+      "defaultShortcut": "Ctrl+Alt+Shift+9"
     }]
   }
 }

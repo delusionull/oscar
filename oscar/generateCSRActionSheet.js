@@ -4,14 +4,16 @@
  */
 function generateCsrActionSheet() {
   var ss = SpreadsheetApp.getActive();
-  var sscd_sheet = ss.getSheetByName(sscd_sheet_name);
-  var formatting_source_range = sscd_sheet.getRange("A2:W2");
+  var oscar_sheet = ss.getSheetByName(oscar_sheet_name);
+  var formatting_source_range = oscar_sheet.getRange("A2:W2");
   
-  keyword_search = Browser.inputBox("Action Item Keyword", "Enter desired Action Item Keyword\\n" +
-                                                           "(date-based, e.g.: #20161208)\\n\\n" +
-                                                           "or leave blank to include all Action\\n" +
-                                                           "Items on current SSCD sheet:\\n" +
-                                                           "\\n ", Browser.Buttons.OK_CANCEL)
+  keyword_search = Browser.inputBox("Action Item Keyword",
+                                    "Enter desired Action Item Keyword\\n" +
+                                    "(date-based, e.g.: #20161208)\\n\\n" +
+                                    "or leave blank to include all Action\\n" +
+                                    "Items on current OSCAR sheet:\\n" +
+                                    "\\n ",
+                                    Browser.Buttons.OK_CANCEL);
   if (keyword_search == 'cancel') {
     return;
   } else if (keyword_search == '') {
@@ -32,10 +34,14 @@ function generateCsrActionSheet() {
   }
   
   // Copy the header row.
-  sscd_sheet.getRange(1, 1, 1, sscd_sheet.getLastColumn()).copyTo(action_sheet.getRange("A1"), {contentsOnly:true});
+  oscar_sheet.getRange(1, 1, 1, oscar_sheet.getLastColumn())
+             .copyTo(action_sheet.getRange("A1"), {contentsOnly:true});
 
   // Insert query to retrieve the rows containing the search string ("#" + current sheet name)
-  action_sheet.getRange(2, 1).setFormula("=QUERY(" + sscd_sheet_name + "!A2:W500; \"select * where " + mtg_notes_column + " contains '" + action_item_keyword + "'\")")
+  action_sheet.getRange(2, 1)
+              .setFormula(
+                "=QUERY(" + oscar_sheet_name + "!A2:W500; \"select * where " + mtg_notes_col + " contains '" + action_item_keyword + "'\")"
+              );
  
    // Freezes zero rows (yay for coding with friends!)
   freeze1Row1Col(action_sheet, 0);

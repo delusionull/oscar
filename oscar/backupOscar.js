@@ -1,13 +1,13 @@
-function backupSscd() {
-  var sscd, sscdBackup;
-  sscd = SpreadsheetApp.getActiveSpreadsheet();
+function backupOscar() {
+  var oscar, oscarBackup;
+  oscar = SpreadsheetApp.getActiveSpreadsheet();
   
-  if (userConfirmBackup()) { sscdBackup = createSscdBackup(sscd) } else { return }
+  if (userConfirmBackup()) { oscarBackup = createOscarBackup(oscar) } else { return }
 
-  if (!fileExistsOnGDriveRoot(sscdBackup.getName())) {
+  if (!fileExistsOnGDriveRoot(oscarBackup.getName())) {
     say("Something went wrong. The backup was not created.")
-    return
+    return;
   }
   
-  deleteAllButTwoBakSheets(sscd);
+  deleteAllButTwoBakSheets(oscar);
 }

@@ -88,7 +88,7 @@ function freeze1Row1Col(sheet, status) {
 
 function normalizeFontOfRange(sheet, range) {
   var ss_range = sheet.getRange(range);
-  ss_range.setFontWeight("normal").setFontStyle("normal")
+  ss_range.setFontWeight("normal").setFontStyle("normal");
 }
 
 function getWeekDay(date){
@@ -108,9 +108,22 @@ function findInColumn(sheet, col, data) {
   if (values[row][0] === data) { return row+1 } else { return -1 }    
 }
 
+function sortOscarSheet() {
+  var oscar = SpreadsheetApp.getActive();
+  var oscar_sheet = oscar.getSheetByName(oscar_sheet_name)
+  fancySort(oscar_sheet);
+}
 
-
-
+function resetOscarFormatting() {
+  var oscar = SpreadsheetApp.getActive();
+  var oscar_sheet = oscar.getSheetByName(oscar_sheet_name)
+  var reset_range = oscar_sheet.getRange(oscar_edit_range);
+  reset_range.setVerticalAlignment("middle")
+             .setHorizontalAlignment("center")
+             .setWrap(true)
+             .setFontFamily("Calibri")
+             .setFontSize(11);
+}
 
 
 // Testing stuff below here:
@@ -119,7 +132,7 @@ function findInColumn(sheet, col, data) {
 //function forEveryValueInColumn(ss, col) {
 function forEveryValueInColumn() {
   Logger.log("start");
-  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sscd_sheet_name);
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(oscar_sheet_name);
   var col = "H";
   
   var values = ss.getRange(col + "2:" + "Q" + ss.getLastRow()).getValues();
@@ -151,21 +164,89 @@ function latestDate(datearray) {
   return latest.replace(/\d{4}(\d{2})(\d{2})/g, 'wfmm $1/$2').replace(/\b0/g, '');
 }
 
+function rowsWithRegexInColumn(regex, column, sheet) {
+  sheet = (sheet === undefined ? SpreadsheetApp.getActiveSpreadsheet() : sheet);
+  var column = sheet.getRange(column + ":" + column);  // like A:A
+  var values = column.getValues(); 
+  var row = 0;
+  var re = RegExp(regex);
+  var rows_array = [];
+  while ( values[row] ) {
+    row++;
+    if (values[row] && re.test(values[row][0])) {
+      rows_array.push(row+1);
+    }
+  }
+  return rows_array;
+}
 
-function sortSscdSheet() {
-  var sscd = SpreadsheetApp.getActive();
-  var sscd_sheet = sscd.getSheetByName(sscd_sheet_name)
-  fancySort(sscd_sheet);
+// https://tc39.github.io/ecma262/#sec-array.prototype.includes
+if (!Array.prototype.includes) {
+  Object.defineProperty(Array.prototype, 'includes', {
+    value: function(searchElement, fromIndex) {
+
+      if (this == null) {
+        throw new TypeError('"this" is null or not defined');
+      }
+
+      // 1. Let O be ? ToObject(this value).
+      var o = Object(this);
+
+      // 2. Let len be ? ToLength(? Get(O, "length")).
+      var len = o.length >>> 0;
+
+      // 3. If len is 0, return false.
+      if (len === 0) {
+        return false;
+      }
+
+      // 4. Let n be ? ToInteger(fromIndex).
+      //    (If fromIndex is undefined, this step produces the value 0.)
+      var n = fromIndex | 0;
+
+      // 5. If n ≥ 0, then
+      //  a. Let k be n.
+      // 6. Else n < 0,
+      //  a. Let k be len + n.
+      //  b. If k < 0, let k be 0.
+      var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0);
+
+      function sameValueZero(x, y) {
+        return x === y || (typeof x === 'number' && typeof y === 'number' && isNaN(x) && isNaN(y));
+      }
+
+      // 7. Repeat, while k < len
+      while (k < len) {
+        // a. Let elementK be the result of ? Get(O, ! ToString(k)).
+        // b. If SameValueZero(searchElement, elementK) is true, return true.
+        if (sameValueZero(o[k], searchElement)) {
+          return true;
+        }
+        // c. Increase k by 1. 
+        k++;
+      }
+
+      // 8. Return false
+      return false;
+    }
+  });
 }
 
 function somethingOrNothing(thing) { return ((thing != null) ? thing.valueOf() : "NOTHING") }
+
+function testTest() {
+  var oscar = SpreadsheetApp.getActive();
+  var cur_sheet = oscar.getSheetByName("current");
+  var my_cell = cur_sheet.getRange("C5");
+  my_cell.activate();
+}
 
 function testStuff() {  // test comment
 //  Logger.log(getWeekDay());
   
   
-  var sscd = SpreadsheetApp.getActive();
-  var dr_sheet  = sscd.getSheetByName(drsheet_name);
+  var oscar = SpreadsheetApp.getActive();
+  var dr_sheet  = oscar.getSheetByName(drsheet_name);
   var cell      = dr_sheet.getRange("F223");
   Logger.log((cell.getValue().getMonth() + 1) + "/" + cell.getValue().getDate());
   
@@ -181,34 +262,34 @@ function testStuff() {  // test comment
 //    }
 //  }
 
-//  checkForSscdBloat(sscd);
+//  checkForOscarBloat(oscar);
   
-//  var vars_sheet = sscd.getSheetByName("vars")
+//  var vars_sheet = oscar.getSheetByName("vars")
 //  var last_timestamp = vars_sheet.getRange(vars_sheet_last_timestamp).getValue();
 
-//  var sscd_name = sscd.getName();
-//  sscd.rename(sscd_name.replace(/; .*/, "; ") + "3rd test");
-//  var sscd_sheet = sscd.getSheetByName("current");
-//  fancySort(sscd_sheet);
-//  sscd_sheet.activate();
-//  var test_sheet = sscd.getActiveSheet();
-//  var sscd_sheet_name = test_sheet.getName();
+//  var oscar_name = oscar.getName();
+//  oscar.rename(oscar_name.replace(/; .*/, "; ") + "3rd test");
+//  var oscar_sheet = oscar.getSheetByName("current");
+//  fancySort(oscar_sheet);
+//  oscar_sheet.activate();
+//  var test_sheet = oscar.getActiveSheet();
+//  var oscar_sheet_name = test_sheet.getName();
 //  Logger.log(last_timestamp);
   //var sheetname;
   //var sheet;
   //for (var i = 35; i < 39; i++) {
-  //  sheetname = sscd_sheets[(i)].getSheetName();
-  //  sheet = sscd.getSheets()[(i)]
-  //  sscd.deleteSheet(sheet);
+  //  sheetname = oscar_sheets[(i)].getSheetName();
+  //  sheet = oscar.getSheets()[(i)]
+  //  oscar.deleteSheet(sheet);
 //    Logger.log("deleted " + i + " - " + sheetname);
 //  }
   //toaster(fileExistsOnGDriveRoot("shipal.csv"))
   //Logger.log("Protected ranges:\n")
 //  var ss = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("20161102");
-//  var range_to_protect = ss.getRange(csr_notes_column + ":" + csr_notes_column);
+//  var range_to_protect = ss.getRange(csr_notes_col + ":" + csr_notes_col);
 //  var protection = range_to_protect.protect().setDescription("testing...");
 //  protection.removeEditors(protection.getEditors());
-//  protection.addEditors(csr_editors).addEditors(sscd_editors);
+//  protection.addEditors(csr_editors).addEditors(oscar_editors);
   /**var protections = ss.getProtections(SpreadsheetApp.ProtectionType.RANGE);
   for (var i = 0; i < protections.length; i++) {
     var protection = protections[i];

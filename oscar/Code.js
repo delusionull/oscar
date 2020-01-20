@@ -1,36 +1,44 @@
+// OSCAR Operational Shipping Calendar Ancillary Report
+
 function onEdit(e){
-  if ( isNonMainSheetEdit(e) || isMultiCellEdit(e) || isNonEdit(e) || override() ) { return }
-  if (undoProhibitedEdit(e)) { return }
-  setCellEditNote(e)
+  var email = Session.getActiveUser().getEmail();
+  Logger.log(email);
+  if (isIssuesSheetEdit(e)) { issuesSheetHandler(e) };
+  if ( isNonMainSheetEdit(e) || isMultiCellEdit(e) || isNonEdit(e) || override() ) { return };
+  if (undoProhibitedEdit(e)) { return };
+  setCellEditNote(e);
+  if (isOpsColumn(e)) { issueHandler(e) };
 }
 
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
-  ui.createMenu('SSCD Tools')
+  ui.createMenu('OSCAR Tools')
   .addSubMenu(ui.createMenu('CSR')
-              .addItem('Generate CSR Action Sheet...', 'generateCsrActionSheet'))
+    .addItem('Generate CSR Action Sheet...', 'generateCsrActionSheet'))
   .addSeparator()
   .addSubMenu(ui.createMenu('Scheduler')
-              .addItem('Update SSCD Sheet...',    'updateSscdSheet')
-              .addItem('Backup SSCD...', 'backupSscd'))
+    .addItem('Update OSCAR Sheet...',    'updateOscarSheet')
+    .addItem('Backup OSCAR...', 'backupOscar')
+    .addItem('Sort OSCAR...', 'sortOscarSheet')
+    .addItem('Reset Formatting...', 'resetOscarFormatting'))
   .addToUi();
 }
 
 function triggerEveryTwoHours() {
-  updateComponentsSheet();
   updateShippingSheets();
-  
-  var sscd = SpreadsheetApp.getActive();
-  var vars_sheet = sscd.getSheetByName(vars_sheet_name)
+  var oscar = SpreadsheetApp.getActive();
+  var vars_sheet = oscar.getSheetByName(vars_sheet_name)
   vars_sheet.getRange(vars_sheet_today_date).setValue(isoDateString(_, 1));
 }
 
 function triggerEveryHour() {
-  // check for new data and refresh SSCD current sheet
+  // check for new data and refresh oscar current sheet
 }
 
 function triggerEveryDayAt2Am() {
-  var sscd = SpreadsheetApp.getActive();
-  var sscd_sheet = sscd.getSheetByName(sscd_sheet_name)
-  normalizeFontOfRange(sscd_sheet, sscd_edit_range);
+  var oscar = SpreadsheetApp.getActive();
+  var oscar_sheet = oscar.getSheetByName(oscar_sheet_name)
+  var issues_sheet = oscar.getSheetByName(issues_sheet_name)
+  normalizeFontOfRange(oscar_sheet, oscar_edit_range);
+  normalizeFontOfRange(issues_sheet, isu_reply_col + ":" + isu_reply_col);
 }
