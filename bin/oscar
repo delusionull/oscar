@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+$stdout.sync = true
+require 'awesome_print'
+require_relative '../lib/oscar/runner'
+
+runner = Oscar::Runner.new()
+runner.run
+
