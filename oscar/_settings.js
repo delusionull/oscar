@@ -72,17 +72,18 @@ var vars_sheet_recent_bak       = "$B$2";
 var vars_sheet_last_timestamp   = "B3";
 
 var override_on                 = false;
-var oscar_maint_coders          = ["***REMOVED***", "***REMOVED***"]; 
-var oscar_editors               = ["***REMOVED***", "***REMOVED***", "***REMOVED***"];
-var oscar_backups_owner         = "***REMOVED***";
-var csr_editors                 = ["***REMOVED***", "***REMOVED***", "***REMOVED***", "***REMOVED***"];
-var shipping_editors            = ["***REMOVED***", "***REMOVED***"];
-var purch_editors               = ["***REMOVED***"];
+
+var oscar_maint_coders          = protected_oscar_maint_coders; 
+var oscar_editors               = protected_oscar_editors;
+var oscar_backups_owner         = protected_oscar_backups_owner;
+var csr_editors                 = protected_csr_editors;
+var shipping_editors            = protected_shipping_editors;
+var purch_editors               = protected_purch_editors;
 
 // Your name doesn't need to be in here:
-var oscar_test_coders           = ["***REMOVED***"];
+var oscar_test_coders           = protected_oscar_test_coders;
 // Nor here:
-var oscar_test_coder            = "***REMOVED***";
+var oscar_test_coder            = protected_oscar_test_coder;
 
 // Number of holidays since last working day 
 var holiday                     = 0;

@@ -59,3 +59,9 @@ tags
 # credentials
 /lib/oscar/credentials.rb
 
+# protected email addresses, etc
+/oscar/_protected_settings.js
+
+# report file
+/oscar.csv
+
