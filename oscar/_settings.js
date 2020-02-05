@@ -65,7 +65,7 @@ var isu_resolved_col            = "F";
 
 var isu_log_resolved_time_col   = "G";
 
-var isu_sheet_last_col          = "J";
+var isu_sheet_last_col          = "F";
 
 var vars_sheet_today_date       = "B1";
 var vars_sheet_recent_bak       = "$B$2";
