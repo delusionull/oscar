@@ -12,6 +12,7 @@
     }]
   },
   "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "DEPRECATED_ES5",
   "sheets": {
     "macros": [{
       "menuName": "jump to issue on other tab",

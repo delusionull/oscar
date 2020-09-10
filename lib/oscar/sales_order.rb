@@ -51,6 +51,14 @@ module Oscar
       @so_qry_lines.first[:zip]
     end
 
+    def netprice
+      #sum = 0
+      #ap @so_qry_lines
+      #@so_qry_lines.each{|ln| sum += ln[:net_price]}
+      #return sum
+      @so_qry_lines.first[:net_price]
+    end
+
     def requested_ship_date
       @so_qry_lines.first[:requested_ship_date].strftime('%F')
     end
@@ -62,6 +70,7 @@ module Oscar
     def weight
       sum = 0
       layup_lines.lines.each{|ln| sum += ln.weight}
+      # add something here to include packaging weight
       return sum
     end
 
@@ -74,7 +83,7 @@ module Oscar
     end
 
     def skip_message
-      puts "Skipping #{@so_num}"
+      puts "SO #{@so_num} NOT FOUND. Skipping..."
     end
   end
 end

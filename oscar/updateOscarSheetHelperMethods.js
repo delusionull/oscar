@@ -25,8 +25,7 @@ function backupSheet(sheet, name) {
 }
 
 function importNewDataFromGdrive(incoming_sheet, oscar_data_file_name) {
-  var root_folder = DriveApp.getRootFolder();
-  var oscar_data_file = root_folder.getFilesByName(oscar_data_file_name).next();
+  var oscar_data_file = DriveApp.getFilesByName(oscar_data_file_name).next();
   var csvData = Utilities.parseCsv(oscar_data_file.getBlob().getDataAsString());
 
   incoming_sheet.clear();
@@ -35,7 +34,7 @@ function importNewDataFromGdrive(incoming_sheet, oscar_data_file_name) {
   if (DriveApp.getFoldersByName("OSCAR").hasNext()) {
     var oscar_folder = DriveApp.getFoldersByName("OSCAR").next();
   } else {
-    var oscar_folder = root_folder.createFolder("OSCAR");
+    var oscar_folder = DriveApp.createFolder("OSCAR");
   }
   
   oscar_data_file.setName(oscar_data_file_name + "_" + isoDateString(new Date()) + "_" + isoTimeString() + ".bak");
@@ -55,19 +54,16 @@ function updateAddOrRemoveRows(o_sheet, i_sheet, d_sheet, o_sos, i_sos) {
   var range2_start   = toNum(update_range2_start_col);
   var range2_end     = toNum(update_range2_end_col);
   var range2_size    = (range2_end - range2_start) + 1;
-  // var all_drs        = d_sheet.getRange(2, 1, d_sheet.getLastRow() - 1, 6).getValues();
 
   for (var i in i_sos) {
     oscar_index = ArrayLib.indexOf(o_sos, 0, i_sos[i][0]);
     if ((oscar_index >= 0)) {  // update a row
       i_sheet.getRange(+i + 1, range1_start, 1, range1_size).copyValuesToRange(o_sheet, range1_start, range1_end, oscar_index+2, oscar_index+2);
       i_sheet.getRange(+i + 1, range2_start, 1, range2_size).copyValuesToRange(o_sheet, range2_start, range2_end, oscar_index+2, oscar_index+2);
-      // insertDrsNote(o_sheet, all_drs, i_sos[i][0], oscar_index+2);
     } else {  // add a row
       first_null_row++;
       i_sheet.getRange(+i + 1, range0_start, 1, range0_size).copyValuesToRange(o_sheet, range0_start, range0_end, first_null_row, first_null_row);
       insertLookupFormulas(o_sheet, first_null_row);
-      // insertDrsNote(o_sheet, all_drs, i_sos[i][0], first_null_row);
     }
   }
   for (var i in o_sos) {
@@ -105,21 +101,6 @@ function setVarsSheetValues(sheet, last, curr) {
 }
 
 function insertLookupFormulas(sheet, row) {
-//  sheet.getRange(row, toNum(changes_col), 1, 1)
-//    .setFormula("=IFERROR(\n" +
-//                "  IF(\n" +
-//                "    VLOOKUP(\n" +
-//                "      indirect(\"$A\"&(row())),\n" +
-//                "      INDIRECT(vars!" + vars_sheet_recent_bak + "&\"!A2:W800\"),\n" +
-//                "      COLUMN()+1,\n" +
-//                "      FALSE\n" +
-//                "    )=indirect(\"$" + shipdate_col + "\"&(row())),\n" +
-//                "    \"\",\n" + "    VLOOKUP(\n" +
-//                "      indirect(\"$A\"&(row())),\n" +
-//                "      INDIRECT(vars!" + vars_sheet_recent_bak + "&\"!A2:W800\"),\n" +
-//                "      COLUMN()+1,\n" + "      FALSE\n" +
-//                "    )\n" +
-//                "  ),\"NEW\")")
   sheet.getRange(row, toNum(weightperdate_col), 1, 1)
     .setFormula("=if(AND(\n" +
                 "    indirect(\"$" + shipdate_col + "\"&(row())) = INDIRECT(\n" +

@@ -31,6 +31,7 @@ module Oscar
     end
 
     def wt(code)
+      Oscar::Constants::CORE_WEIGHTS[code] ||
       @lines.find { |h| h[:com_part_num] == code }[:prod_weight].to_i
     end
 

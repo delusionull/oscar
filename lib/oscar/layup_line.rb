@@ -54,7 +54,7 @@ module Oscar
     end
 
     def weight
-      @lines[0][:fg_weight].to_i * qty
+      (face.weight + back.weight + core.weight) * qty
     end
 
     def desc1

@@ -1,5 +1,8 @@
 function issueHandler(edit) {
-  if ( isNotIssue(edit) ) { return };
+  if ( isNotIssue(edit) ) { 
+    Logger.log("here");
+    return
+  };
   
   var oscar        = SpreadsheetApp.getActive();
   var issues_sheet = oscar.getSheetByName(issues_sheet_name);

@@ -28,26 +28,32 @@ module Oscar
 
     BACK_CODES = FACE_CODES << 'G2'
 
+    # packaging weights calculation:
+    # 3 lbs/sq ft of bottom board
+    # 2 lbs/ft of runner
+    # 5 runners for 12 ft bundles
+    # 3 runners for all other sizes
     SIZE = {
-      "B1" => {:inches => "3096",  :shazam => 50},
-      "B2" => {:inches => "30120", :shazam => 49},
-      "B3" => {:inches => "30144", :shazam => 46},
-      "38" => {:inches => "3697",  :shazam => 43},
-      "31" => {:inches => "36120", :shazam => 52},
-      "32" => {:inches => "36144", :shazam => 53},
-      "M4" => {:inches => "4878",  :shazam => 61},
-      "M8" => {:inches => "3896",  :shazam => 62},
-      "48" => {:inches => "4896",  :shazam =>  1},
-      "41" => {:inches => "48120", :shazam =>  2},
-      "42" => {:inches => "48144", :shazam =>  3},
-      "AA" => {:inches => "51120", :shazam => 47},
-      "56" => {:inches => "6072",  :shazam => 42},
-      "58" => {:inches => "6096",  :shazam =>  4},
-      "51" => {:inches => "60120", :shazam =>  5},
-      "52" => {:inches => "60144", :shazam =>  6},
-      "TA" => {:inches => "4896",  :shazam =>  1},
-      "TB" => {:inches => "4896",  :shazam =>  1},
-      "TC" => {:inches => "4896",  :shazam =>  1},
+      "B1" => {:inches => "3096",  :shazam => 50, :pack_wt => 75},
+      "B2" => {:inches => "30120", :shazam => 49, :pack_wt => 90},
+      "B3" => {:inches => "30144", :shazam => 46, :pack_wt => 115},
+      "38" => {:inches => "3697",  :shazam => 43, :pack_wt => 90},
+      "31" => {:inches => "36120", :shazam => 52, :pack_wt => 108},
+      "32" => {:inches => "36144", :shazam => 53, :pack_wt => 138},
+      "M4" => {:inches => "4878",  :shazam => 61, :pack_wt => 102},
+      "M8" => {:inches => "3896",  :shazam => 62, :pack_wt => 90},
+      "48" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120},
+      "41" => {:inches => "48120", :shazam =>  2, :pack_wt => 144},
+      "42" => {:inches => "48144", :shazam =>  3, :pack_wt => 184},
+      "AA" => {:inches => "51120", :shazam => 47, :pack_wt => 144},
+      "55" => {:inches => "6060",  :shazam => 57, :pack_wt => 105},
+      "56" => {:inches => "6072",  :shazam => 42, :pack_wt => 120},
+      "58" => {:inches => "6096",  :shazam =>  4, :pack_wt => 150},
+      "51" => {:inches => "60120", :shazam =>  5, :pack_wt => 180},
+      "52" => {:inches => "60144", :shazam =>  6, :pack_wt => 230},
+      "TA" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120},
+      "TB" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120},
+      "TC" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120},
     }
 
     AFI_INFOR_SIZE = {
@@ -99,6 +105,33 @@ module Oscar
       "49" => {:decimal => 1.9375,  :fraction => "1-15/16"},
       "50" => {:decimal => 2.0,     :fraction => "2"},
       "51" => {:decimal => 2.0,     :fraction => "2"},
+    }
+
+    CORE_WEIGHTS = {
+      "FRPB03750408"          => 53,
+      "MDF021939X97"          => 35,
+      "MDF0250408"            => 35,
+      "MDF06880408"           => 88,
+      "MDF0750408"            => 95,
+      "MDO0750410"            => 82,
+      "PB050408"              => 66,
+      "PB06880408"            => 94,
+      "PB06880410"            => 113,
+      "PB06880508"            => 107,
+      "PB06880512"            => 160,
+      "PB0688NAF0408"         => 94,
+      "PB0750408"             => 100,
+      "PB0750410"             => 120,
+      "PB0750510"             => 146,
+      "PB0750512"             => 172,
+      "PB10408"               => 134,
+      "PB10512"               => 226,
+      "PB11250408"            => 157,
+      "PB11250506"            => 128,
+      "PB11250508"            => 172,
+      "PB11250512"            => 264,
+      "PLY0718ACFIR0510"      => 187,
+      "PLY075BALTICBIRCH0408" => 80,
     }
   end
 end

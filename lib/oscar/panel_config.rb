@@ -39,7 +39,7 @@ module Oscar
       return 0 if customer_core
       cll = @lines.find_all{|h| Oscar::Constants::CORE_CODES.member?(h[:prod_detail][0..1]) }
             .max_by{|h| h[:sequence_num] }[:sequence_num].to_i
-      raise "Core code not in list or lines out of order" if cll == 0
+      #raise "Core code not in list or lines out of order" if cll == 0
       return cll
     end
   end

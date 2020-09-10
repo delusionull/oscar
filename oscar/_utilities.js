@@ -45,7 +45,7 @@ function incrementBusinessDateBy(start_date, increment_by) {
 }
 
 // Check for the existence of a file on the root of the user's Google Drive
-function fileExistsOnGDriveRoot(file_name) { return (DriveApp.getRootFolder().getFilesByName(file_name).hasNext() ? true : false) }
+function fileExistsOnGDriveRoot(file_name) { return (DriveApp.getFilesByName(file_name).hasNext() ? true : false) }
 
 // Popup message in lower right corner
 function toaster(msg, title, time) {

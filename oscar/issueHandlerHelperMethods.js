@@ -81,7 +81,7 @@ function issuesSheetHandler(edit) {
   }
   
   if ( prohibited_issues_sheet_edit(edit) ) {
-    undoEdit(edit)
+    if (override_on) { return } else { undoEdit(edit) };
   } else {
     if ( edit.range.getValue() != "" ) {
       var ui = SpreadsheetApp.getUi();

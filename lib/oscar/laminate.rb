@@ -44,7 +44,7 @@ module Oscar
     end
 
     def weight
-      @lines.find { |h| h[:sequence_num] == line_num }[:weight].to_i
+      @lines.find { |h| h[:com_part_num] == code }[:prod_weight].to_i
     end
 
     def instructions

@@ -22,6 +22,23 @@ module Oscar
 
     def run
       sos = get_so_nums
+      #p sos
+      #str_sos = sos.map(&:to_s)
+      #layup_items = Oscar::DBs::DB_SCHED[:tblLayupItems].join(:tblJobs, :JobID => :JobID)
+      #layup_lines =
+      #  layup_items.select(:LayupID, :LayupQnty, :LayupStagerNote, :WoNumber, :Done, :Printed)
+      #    .where(
+      #      (Sequel[{LayupExclude: false}]) |
+      #      (
+      #        Sequel[{LayupExclude: true}] &
+      #        Sequel.like(:LayupInstructions, '%SEND%')
+      #      )
+      #    )
+      #schedule_blob = layup_lines.where(JobSalesOrderNo: str_sos).all
+      #p schedule_blob
+      #abort
+
+
       sos.each do |so_num|
         so = SalesOrder.new(so_num)
         schedule_so = ScheduleSO.new(so)
@@ -42,7 +59,7 @@ module Oscar
         so_info << "#{schedule_so.lines_with_done_and_total*(' '*25)}," # work orders with done and total
         so_info << "," # material with num
         # so_info << "$#{line[:Dollars].to_f < 1 ? -(line[:Cost].to_s.to_f) : line[:Dollars].to_f}," # if "line[:Dollars]" < $1 then display neg (-)"line[:Cost]"
-        so_info << "," # cost
+        so_info << "#{so.netprice}," # cost
         so_info << "#{so.weight}," # weight
         so_info << "," # shipvia
         so_info << "#{so.city}," # city
