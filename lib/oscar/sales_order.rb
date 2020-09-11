@@ -52,11 +52,7 @@ module Oscar
     end
 
     def netprice
-      #sum = 0
-      #ap @so_qry_lines
-      #@so_qry_lines.each{|ln| sum += ln[:net_price]}
-      #return sum
-      @so_qry_lines.first[:net_price]
+      @so_qry_lines.inject(0){|sum, ln| sum += ln[:net_price] if ln[:sequence_num] == 1; sum}
     end
 
     def requested_ship_date
@@ -68,18 +64,12 @@ module Oscar
     end
 
     def weight
-      sum = 0
-      layup_lines.lines.each{|ln| sum += ln.weight}
+      layup_lines.lines.inject(0){|sum, ln| sum += ln.weight; sum}
       # add something here to include packaging weight
-      return sum
     end
 
     def skip
-      if @so_qry_lines.count < 1
-        true
-      else
-        false
-      end
+      @so_qry_lines.count < 1 ? true : false
     end
 
     def skip_message
