@@ -63,7 +63,6 @@ function updateAddOrRemoveRows(o_sheet, i_sheet, d_sheet, o_sos, i_sos) {
     } else {  // add a row
       first_null_row++;
       i_sheet.getRange(+i + 1, range0_start, 1, range0_size).copyValuesToRange(o_sheet, range0_start, range0_end, first_null_row, first_null_row);
-      insertLookupFormulas(o_sheet, first_null_row);
     }
   }
   for (var i in o_sos) {
@@ -78,6 +77,7 @@ function updateAddOrRemoveRows(o_sheet, i_sheet, d_sheet, o_sos, i_sos) {
   }
 }
 
+// Deprecated
 function insertDrsNote(o_sheet, all_drs, sales_order, row) {
   var drs      = ArrayLib.filterByText(all_drs, 0, sales_order);
   var drs_only = [];
@@ -100,6 +100,7 @@ function setVarsSheetValues(sheet, last, curr) {
   sheet.getRange(vars_sheet_last_timestamp).setValue(curr);
 }
 
+// Deprecated
 function insertLookupFormulas(sheet, row) {
   sheet.getRange(row, toNum(weightperdate_col), 1, 1)
     .setFormula("=if(AND(\n" +
@@ -129,8 +130,6 @@ function setReferenceCells(oscar_sheet) {
 function fancySort(sheet_to_sort) {
   var ss_range = sheet_to_sort.getRange("A2:" + oscar_last_col);
   ss_range.sort([{column: toNum(shipdate_col),    ascending: true},
-                 {column: toNum(shipvia_col),     ascending: true},
-                 {column: toNum(so_type_col),     ascending: true},
                  {column: toNum(customer_col),    ascending: true},
                  {column: toNum(sales_order_col), ascending: true},
                  {column: toNum(so_suffix_col),   ascending: true}]);

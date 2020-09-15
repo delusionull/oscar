@@ -21,40 +21,32 @@ var bak_sheets_limit_number     = 20;
 var sales_order_col             = "A";
 var so_suffix_col               = "B";
 var shipdate_col                = "C";
-var so_type_col                 = "D";
-var gross_margin_col            = "F";
-var customer_col                = "G";
-var apdmove_col                 = "H";
-var status1_col                 = "I";
-var mtg_notes_col               = "L";
-var ops_col                     = "N";
-var csr_notes_col               = "O";
-var shipping_notes_col          = "P";
-var purch_notes_col             = "Q";
-var scheduled_col               = "R";
-var material_pos_col            = "S";
-var revenue_col                 = "U";
-var weight_col                  = "V";
-var shipvia_col                 = "W";
-var sales_col                   = "Z";
-var weightperdate_col           = "AA";
-var reference_cell_col          = "AB";
-var numeric_so_col              = "AC";
+var customer_col                = "E";
+var status1_col                 = "F";
+var ops_col                     = "J";
+var csr_notes_col               = "K";
+var shipping_notes_col          = "L";
+var scheduled_col               = "M";
+var material_pos_col            = "O";
+var revenue_col                 = "P";
+var weight_col                  = "Q";
+var state_col                   = "S";
+var reference_cell_col          = "T";
 
 var oscar_first_edit_col        = status1_col;
-var oscar_last_edit_col         = purch_notes_col;
+var oscar_last_edit_col         = shipping_notes_col;
 
 var oscar_edit_range            = oscar_first_edit_col + "2:" + oscar_last_edit_col;
 var oscar_first_col             = sales_order_col;
-var oscar_last_col              = "AC";
+var oscar_last_col              = "T";
 
 var numerical_first_edit_col    = toNum(oscar_first_edit_col);
 var num_of_edit_cols            = toNum(oscar_last_edit_col) - toNum(oscar_first_edit_col) + 1;
 
-var update_range1_start_col     = so_suffix_col
-var update_range1_end_col       = apdmove_col
-var update_range2_start_col     = scheduled_col
-var update_range2_end_col       = sales_col
+var update_range1_start_col     = so_suffix_col;
+var update_range1_end_col       = customer_col;
+var update_range2_start_col     = scheduled_col;
+var update_range2_end_col       = state_col;
 
 var isu_sales_order_col         = "A";
 var isu_customer_col            = "B";

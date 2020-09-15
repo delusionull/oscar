@@ -46,30 +46,21 @@ module Oscar
         so_info << "#{so.so_num},"
         so_info << "#{so.so_suffix},"
         so_info << "#{so.requested_ship_date},"
-        so_info << "," # so type
         so_info << "#{flags(schedule_so, so)}," # flag
-        so_info << "," # margin 
         so_info << "#{(so.customer_num.to_s +
                       (' ' + ' ' * (26 - so.customer_num.to_s.length)) +
                        so.ship_to_name.to_s +
-        ' ' * 25 + so.customer_po_num.to_s).strip},"
-        so_info << "," # apd date, apd code
-        so_info << "," * 9
+                       ' ' * 25 + so.customer_po_num.to_s).strip},"
+        so_info << "," * 7
         so_info << "#{schedule_so.lines_with_scheduled_and_total*(' '*25)}," # lines with scheduled and total
         so_info << "#{schedule_so.lines_with_done_and_total*(' '*25)}," # work orders with done and total
         so_info << "," # material with num
-        # so_info << "$#{line[:Dollars].to_f < 1 ? -(line[:Cost].to_s.to_f) : line[:Dollars].to_f}," # if "line[:Dollars]" < $1 then display neg (-)"line[:Cost]"
         so_info << "#{so.netprice}," # cost
         so_info << "#{so.weight}," # weight
-        so_info << "," # shipvia
         so_info << "#{so.city}," # city
         so_info << "#{so.state}," # state
-        so_info << "," # salesperson
-        so_info << ",,"
+        so_info << ","
         puts so_info
-        #next schedule_so.warn_exists if schedule_so.exists?
-        #schedule_so.print_to_console
-        #schedule_so.push unless @opts.test
       end
     end
 

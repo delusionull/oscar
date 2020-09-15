@@ -1,6 +1,7 @@
+// Deprecated
 /**
  * Creates a new sheet containing "Action Items" based on a query for
- * a certain string in the "MTG Notes" column.
+ * a certain string in the "Job Notes" column.
  */
 function generateCsrActionSheet() {
   var ss = SpreadsheetApp.getActive();
@@ -40,7 +41,7 @@ function generateCsrActionSheet() {
   // Insert query to retrieve the rows containing the search string ("#" + current sheet name)
   action_sheet.getRange(2, 1)
               .setFormula(
-                "=QUERY(" + oscar_sheet_name + "!A2:W500; \"select * where " + mtg_notes_col + " contains '" + action_item_keyword + "'\")"
+                "=QUERY(" + oscar_sheet_name + "!A2:W500; \"select * where " + job_notes_col + " contains '" + action_item_keyword + "'\")"
               );
  
    // Freezes zero rows (yay for coding with friends!)

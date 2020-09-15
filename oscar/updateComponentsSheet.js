@@ -1,3 +1,4 @@
+// Deprecated
 function updateComponentsSheet() {
   var oscar = SpreadsheetApp.getActive();
   var components_sheet = oscar.getSheetByName(components_sheet_name);

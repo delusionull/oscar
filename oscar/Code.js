@@ -13,9 +13,6 @@ function onEdit(e){
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
   ui.createMenu('OSCAR Tools')
-  .addSubMenu(ui.createMenu('CSR')
-    .addItem('Generate CSR Action Sheet...', 'generateCsrActionSheet'))
-  .addSeparator()
   .addSubMenu(ui.createMenu('Scheduler')
     .addItem('Update OSCAR Sheet...',    'updateOscarSheet')
     .addItem('Backup OSCAR...', 'backupOscar')
