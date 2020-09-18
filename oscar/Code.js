@@ -2,7 +2,6 @@
 
 function onEdit(e){
   var email = Session.getActiveUser().getEmail();
-  Logger.log(email);
   if (isIssuesSheetEdit(e)) { issuesSheetHandler(e) };
   if ( isNonMainSheetEdit(e) || isMultiCellEdit(e) || isNonEdit(e) || override() ) { return };
   if (undoProhibitedEdit(e)) { return };

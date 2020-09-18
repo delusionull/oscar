@@ -35,6 +35,12 @@ function deleteAllButTwoBakSheets(oscar) {
   }
 }
 
+function clearIssuesLog(oscar) {
+  var issues_log_sheet = oscar.getSheetByName(issues_log_sheet_name);
+  if (issues_log_sheet.getLastRow() <= 500) { return };
+  issues_log_sheet.getRange("A2:G").clear();
+}
+
 function getSheetNamesThatEndWithBak(sheets) {
   var bak_sheets = [];
   for (i = 0; i < sheets.length; i++) {

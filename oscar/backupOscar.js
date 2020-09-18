@@ -10,4 +10,5 @@ function backupOscar() {
   }
   
   deleteAllButTwoBakSheets(oscar);
+  clearIssuesLog(oscar);
 }
