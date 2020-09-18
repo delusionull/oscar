@@ -81,7 +81,7 @@ function issuesSheetHandler(edit) {
   }
   
   if ( prohibited_issues_sheet_edit(edit) ) {
-    if (override_on) { return } else { undoEdit(edit) };
+    if (override()) { return } else { undoEdit(edit) };
   } else {
     if ( edit.range.getValue() != "" ) {
       var ui = SpreadsheetApp.getUi();
@@ -132,7 +132,7 @@ function prohibited_issues_sheet_edit(edit) {
     return true;
   }
 }
-  
+
 function allIssuesHaveBeenAnswered(issues_sheet) {
   if ( noIssuesExist(issues_sheet) ) { return true };
   var issue_cells = issues_sheet.getRange(2, toNum(isu_issue_col), issues_sheet.getLastRow()-1, 1);
