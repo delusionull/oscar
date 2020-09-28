@@ -17,7 +17,7 @@ function issueHandler(edit) {
     var isu_relevant_cells = issues_sheet.getRange(2, toNum(isu_sales_order_col), issues_sheet.getLastRow() - 1, toNum(isu_issue_col)).getValues();
   }
 
-  // This is just okay; it actively removes any issue that is deleted.
+  // This is merely okay; it actively removes any issue that is deleted.
   // But some kind of comprehensive cleanup is needed.
   if ( cur_isu_txt.indexOf("ISSUE!") == -1 ) {
     logAndRemoveIssue(edit, isu_relevant_cells, issues_sheet);
