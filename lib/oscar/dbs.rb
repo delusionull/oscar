@@ -10,15 +10,18 @@ module Oscar
 
     TEST = 'NO'
 
-    INFOR_DB   = '(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)' +
-                   "(HOST=#{TEST == 'YES' ? '***REMOVED***' : '***REMOVED***'}" +
-                   ')(PORT=***REMOVED***))(CONNECT_DATA=(SID=' +
-                   "#{TEST == 'YES' ? '***REMOVED***' : '***REMOVED***'})))"
+    INFOR_DB =
+      '(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)' +
+      "(HOST=#{TEST == 'YES' ? Oscar::Credentials::TESTHOST : Oscar::Credentials::HOST}" +
+      ')(PORT=' + Oscar::Credentials::PORT.to_s + '))(CONNECT_DATA=(SID=' +
+      "#{TEST == 'YES' ? Oscar::Credentials::TESTSID : Oscar::Credentials::SID})))"
 
-    DB_INFOR = Sequel.connect(adapter: 'oracle',
-                              user: Oscar::Credentials::USR,
-                              password: Oscar::Credentials::PWD,
-                              database: INFOR_DB)
+    DB_INFOR = Sequel.connect(
+      adapter: 'oracle',
+      user: "#{TEST == 'YES' ? Oscar::Credentials::TESTUSR : Oscar::Credentials::USR}",
+      password: "#{TEST == 'YES' ? Oscar::Credentials::TESTPWD : Oscar::Credentials::PWD}",
+      database: INFOR_DB
+    )
 
     SCHED_PATH = 'Y:\\shazam\\Schedule Shazam Dal_NEW.mdb'
 
