@@ -11,9 +11,9 @@ module Oscar
         banner "\nOptions:"
 
         opt :test, "Test run only; don't write data file."
-        opt :outfile, "Output file name. Default: 'sscd.csv'",
+        opt :outfile, "Output file name. Default: 'oscar.csv'",
           :type => :string,
-          :default => 'sscd.csv'
+          :default => 'oscar.csv'
       end
 
       @test = opts[:test]
