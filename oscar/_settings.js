@@ -17,6 +17,7 @@ var issues_log_sheet_name       = 'Issues Log';
 
 var bak_sheets_warn_number      = 18;
 var bak_sheets_limit_number     = 20;
+var isu_log_max_rows            = 500;
 
 var sales_order_col             = "A";
 var so_suffix_col               = "B";

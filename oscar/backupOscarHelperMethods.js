@@ -37,8 +37,8 @@ function deleteAllButTwoBakSheets(oscar) {
 
 function clearIssuesLog(oscar) {
   var issues_log_sheet = oscar.getSheetByName(issues_log_sheet_name);
-  if (issues_log_sheet.getLastRow() <= 500) { return };
-  issues_log_sheet.getRange("A2:G").clear().clearNote().removeCheckboxes();
+  if (issues_log_sheet.getLastRow() <= isu_log_max_rows) { return };
+  issues_log_sheet.getRange("A2:" + isu_log_resolved_time_col).clear().clearNote().removeCheckboxes();
 }
 
 function getSheetNamesThatEndWithBak(sheets) {
