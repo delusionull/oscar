@@ -15,7 +15,7 @@ function createOscarBackup(oscar) {
   var oscar_id = oscar.getId();
   var file = DriveApp.getFileById(oscar_id);
   var backup_file;
-  backup_file = file.makeCopy(lw_site_location + ' OSCAR Backup: ' + isoDateString(_, 1));
+  backup_file = file.makeCopy(wa_site_location + ' OSCAR Backup: ' + isoDateString(_, 1));
   setOscarBackupPerms(backup_file)
   return backup_file;
 }

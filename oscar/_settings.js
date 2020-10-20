@@ -1,6 +1,6 @@
 // Global OSCAR settings go here.
 
-var lw_site_location            = "Dallas";
+var wa_site_location            = "Dallas";
 
 var oscar_index                 = 1;
 

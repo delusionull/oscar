@@ -17,7 +17,7 @@ module Oscar
     }
 
     CORE_CODES = %w(
-      PB PF PM PS PN MD MB MF MG MM MS MN ML XN XS YA VM
+      PB PF PM PS PN PR MD MB MF MG MM MS MN ML XN XS YA VM
       Y1 YA YB YC YG YL YM YN YR YS YX DO CC VP CS CUST ZZ
     )
 
@@ -75,6 +75,7 @@ module Oscar
       "05" => {:decimal => 0.1875,  :fraction => "3/16"},
       "06" => {:decimal => 0.25,    :fraction => "1/4"},
       "08" => {:decimal => 0.3125,  :fraction => "5/16"},
+      "09" => {:decimal => 0.34375, :fraction => "11/32"},
       "10" => {:decimal => 0.375,   :fraction => "3/8"},
       "11" => {:decimal => 0.4375,  :fraction => "7/16"},
       "13" => {:decimal => 0.5,     :fraction => "1/2"},
