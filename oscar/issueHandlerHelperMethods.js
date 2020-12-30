@@ -159,3 +159,10 @@ function highlightOpsHeader(color) {
   ss_range.setBackground(color);
   ss_range.setValue("Ops Notes");
 }
+
+function manuallyDeleteIssue() {
+  var ss_name = SpreadsheetApp.getActiveSheet().getName();
+  var oscar = SpreadsheetApp.getActive();
+  var isu_sheet = oscar.getSheetByName(issues_sheet_name);
+  var cur_sheet = oscar.getSheetByName(oscar_sheet_name);
+}

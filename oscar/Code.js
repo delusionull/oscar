@@ -16,7 +16,8 @@ function onOpen() {
     .addItem('Update OSCAR Sheet...',    'updateOscarSheet')
     .addItem('Backup OSCAR...', 'backupOscar')
     .addItem('Sort OSCAR...', 'sortOscarSheet')
-    .addItem('Reset Formatting...', 'resetOscarFormatting'))
+    .addItem('Reset Formatting...', 'resetOscarFormatting')
+    .addItem('Delete Highlighted Issue...', 'manuallyDeleteIssue'))
   .addToUi();
 }
 
