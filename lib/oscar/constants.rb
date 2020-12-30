@@ -17,7 +17,7 @@ module Oscar
     }
 
     CORE_CODES = %w(
-      PB PF PM PS PN PR MD MB MF MG MM MS MN ML XN XS YA VM
+      PB PF P1 PM PS PN PR MD MB MF MG MM MS MN ML XN XS YA VM
       Y1 YA YB YC YG YL YM YN YR YS YX DO CC VP CS CUST ZZ
     )
 
