@@ -54,6 +54,7 @@ function logAndRemoveIssue(edit, isu_relevant_cells, issues_sheet) {
   var issue_so = edit.range.getSheet().getRange(edit.range.getRow(), toNum(sales_order_col)).getValue();
   var index = ArrayLib.indexOf(isu_relevant_cells, 0, issue_so);
   var isu_sht_row = index+2;
+  if ( isu_sht_row == 1 ) { return };
   issues_sheet.getRange(isu_sht_row, 1, 1, toNum(isu_sheet_last_col)).copyTo(issues_log_sheet.getRange(emptyrow, 1));
   issues_log_sheet.getRange(emptyrow, toNum(isu_log_resolved_time_col)).setValue( isoDateString(_, 1) + " " + isoTimeString(_, 1) );
   issues_sheet.getRange(isu_sht_row, 1, 1, toNum(isu_sheet_last_col)).clearContent()
