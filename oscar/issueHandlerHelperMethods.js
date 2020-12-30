@@ -50,7 +50,6 @@ function sortIssuesSheet(issues_sheet) {
 function logAndRemoveIssue(edit, isu_relevant_cells, issues_sheet) {
   var issues_log_sheet = SpreadsheetApp.getActive().getSheetByName(issues_log_sheet_name);
   var emptyrow = issues_log_sheet.getLastRow()+1;
-//  var issues_sheet = SpreadsheetApp.getActive().getSheetByName(issues_sheet_name);
   var issue_so = edit.range.getSheet().getRange(edit.range.getRow(), toNum(sales_order_col)).getValue();
   var index = ArrayLib.indexOf(isu_relevant_cells, 0, issue_so);
   var isu_sht_row = index+2;
