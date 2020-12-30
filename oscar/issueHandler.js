@@ -9,7 +9,7 @@ function issueHandler(edit) {
   var cur_isu_txt = edit.range.getValue();
   var old_isu_txt = edit.oldValue;
   var isu_note = edit.range.getNote();
-  
+
   var osc_relevant_cells = oscar_sheet.getRange(2, toNum(sales_order_col), oscar_sheet.getLastRow() - 1, toNum(ops_col)).getValues();
   if ( noIssuesExist(issues_sheet) ) {
     var isu_relevant_cells = "";

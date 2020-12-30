@@ -125,6 +125,22 @@ function resetOscarFormatting() {
              .setFontSize(11);
 }
 
+function rowsWithRegexInColumn(regex, column, sheet) {
+  sheet = (sheet === undefined ? SpreadsheetApp.getActiveSpreadsheet() : sheet);
+  var column = sheet.getRange(column + ":" + column);  // like A:A
+  var values = column.getValues(); 
+  var row = 0;
+  var re = RegExp(regex);
+  var rows_array = [];
+  while ( values[row] ) {
+    row++;
+    if (values[row] && re.test(values[row][0])) {
+      rows_array.push(row+1);
+    }
+  }
+  return rows_array;
+}
+
 
 // Testing stuff below here:
 
@@ -162,22 +178,6 @@ function latestDate(datearray) {
     }
   }
   return latest.replace(/\d{4}(\d{2})(\d{2})/g, 'wfmm $1/$2').replace(/\b0/g, '');
-}
-
-function rowsWithRegexInColumn(regex, column, sheet) {
-  sheet = (sheet === undefined ? SpreadsheetApp.getActiveSpreadsheet() : sheet);
-  var column = sheet.getRange(column + ":" + column);  // like A:A
-  var values = column.getValues(); 
-  var row = 0;
-  var re = RegExp(regex);
-  var rows_array = [];
-  while ( values[row] ) {
-    row++;
-    if (values[row] && re.test(values[row][0])) {
-      rows_array.push(row+1);
-    }
-  }
-  return rows_array;
 }
 
 // https://tc39.github.io/ecma262/#sec-array.prototype.includes

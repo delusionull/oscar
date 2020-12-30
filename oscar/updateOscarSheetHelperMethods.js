@@ -19,7 +19,8 @@ function backupSheet(sheet, name) {
   var backup = sheet.copyTo(sheet.getParent());
   backup.setName(name + "_bak").activate();
   sheet.hideSheet();
-  backup.getParent().moveActiveSheet(2);
+  //This line is causing a problem. "service spreadsheets failed while accessing document with id [Oscar's sheet ID]"
+  //backup.getParent().moveActiveSheet(2);
   lookatme_sheet.activate();
   backup.hideSheet();
 }
