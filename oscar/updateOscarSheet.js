@@ -9,7 +9,7 @@ function updateOscarSheet() {
   var dr_sheet       = oscar.getSheetByName(drsheet_name);
   
   if (checkForOscarBloat(oscar) == false) {return};
-
+  
   if (checkForNewData() == false) {return};
   oscarSheetIsFirst(oscar, oscar_sheet);
   
@@ -18,7 +18,7 @@ function updateOscarSheet() {
   
   backupSheet(oscar_sheet, last_timestamp);
   importNewDataFromGdrive(incoming_sheet, oscar_data_file_name);
-
+  
   var oscar_sos = oscar_sheet.getRange(2, toNum(sales_order_col), oscar_sheet.getLastRow() - 1, 1).getValues();
   var incoming_sos = incoming_sheet.getRange(1, 1, incoming_sheet.getLastRow(), 1).getValues();
   updateAddOrRemoveRows(oscar_sheet, incoming_sheet, dr_sheet, oscar_sos, incoming_sos);

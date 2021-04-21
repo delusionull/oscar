@@ -1,4 +1,4 @@
-// OSCAR Operational Shipping Calendar Ancillary Report
+//  OSCAR Operational Shipping Calendar Ancillary Report
 
 function onEdit(e){
   var email = Session.getActiveUser().getEmail();

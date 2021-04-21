@@ -15,7 +15,7 @@ function oscarSheetIsFirst(oscar, oscar_sheet) {
 function backupSheet(sheet, name) {
   var lookatme_sheet = sheet.getParent().getSheetByName(lookatme_sheet_name);
   unHideAllRows(sheet)
-
+  
   var backup = sheet.copyTo(sheet.getParent());
   backup.setName(name + "_bak").activate();
   sheet.hideSheet();
@@ -28,10 +28,10 @@ function backupSheet(sheet, name) {
 function importNewDataFromGdrive(incoming_sheet, oscar_data_file_name) {
   var oscar_data_file = DriveApp.getFilesByName(oscar_data_file_name).next();
   var csvData = Utilities.parseCsv(oscar_data_file.getBlob().getDataAsString());
-
+  
   incoming_sheet.clear();
   incoming_sheet.getRange(1, 1, csvData.length, csvData[0].length).setValues(csvData);
-
+  
   if (DriveApp.getFoldersByName("OSCAR").hasNext()) {
     var oscar_folder = DriveApp.getFoldersByName("OSCAR").next();
   } else {
@@ -55,7 +55,7 @@ function updateAddOrRemoveRows(o_sheet, i_sheet, d_sheet, o_sos, i_sos) {
   var range2_start   = toNum(update_range2_start_col);
   var range2_end     = toNum(update_range2_end_col);
   var range2_size    = (range2_end - range2_start) + 1;
-
+  
   for (var i in i_sos) {
     oscar_index = ArrayLib.indexOf(o_sos, 0, i_sos[i][0]);
     if ((oscar_index >= 0)) {  // update a row

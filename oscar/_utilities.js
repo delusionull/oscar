@@ -144,6 +144,17 @@ function rowsWithRegexInColumn(regex, column, sheet) {
 
 // Testing stuff below here:
 
+// In-cell image insertion doesn't work yet:
+// https://issuetracker.google.com/issues/129384672
+function insertImageOnSpreadsheet() {
+  var oscar = SpreadsheetApp.getActive();
+  var oscar_sheet = oscar.getSheetByName(oscar_sheet_name)
+  var fileId = '1czq5D7RTLErTZ3HwRJTuACsi44VIVwRV';
+  var img = DriveApp.getFileById(fileId).getBlob();
+  
+  oscar_sheet.insertImage(img, 1, 1);
+}
+
 // Do something with every row based on the value of the first column.
 //function forEveryValueInColumn(ss, col) {
 function forEveryValueInColumn() {
