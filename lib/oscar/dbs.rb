@@ -23,7 +23,7 @@ module Oscar
       database: INFOR_DB
     )
 
-    SCHED_PATH = 'Y:\\shazam\\Schedule Shazam Dal_NEW.mdb'
+    SCHED_PATH = 'Z:\\Schedule Shazam Dal_NEW.mdb'
 
     connection_string = 'Provider=Microsoft.ACE.OLEDB.12.0;Data Source='
     DB_SCHED = Sequel.ado(:conn_string=>connection_string + SCHED_PATH) 

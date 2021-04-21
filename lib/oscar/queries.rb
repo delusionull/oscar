@@ -11,6 +11,7 @@ module Oscar
       CAST(pro2dw.kpet.cono AS INT)       AS company_num,
       CAST(0 AS INT)                      AS wt_num,
       CAST(0 AS INT)                      AS wt_suffix,
+      NULL                                AS wt_warehouse,
       CAST(pro2dw.kpet.stagecd AS INT)    AS wo_stage_code,
            pro2dw.kpet.whse               AS warehouse,
            pro2dw.kpet.shipprod           AS part_num,
@@ -89,6 +90,7 @@ module Oscar
       CAST(pro2dw.kpet.cono AS INT)       AS company_num,
       CAST(pro2dw.wtel.wtno AS INT)       AS wt_num,
       CAST(pro2dw.wtel.wtsuf AS INT)      AS wt_suffix,
+           pro2dw.wteh.shiptowhse         AS wt_warehouse,
       CAST(pro2dw.kpet.stagecd AS INT)    AS wo_stage_code,
            pro2dw.kpet.whse               AS warehouse,
            pro2dw.kpet.shipprod           AS part_num,
@@ -140,6 +142,7 @@ module Oscar
       INNER JOIN pro2dw.wtelo ON pro2dw.wtel.wtno = pro2dw.wtelo.wtno
                              AND pro2dw.wtel.lineno_ = pro2dw.wtelo.lineno_
                              AND pro2dw.wtel.cono = pro2dw.wtelo.cono
+      INNER JOIN pro2dw.wteh  ON pro2dw.wtel.wtno = pro2dw.wteh.wtno
       INNER JOIN pro2dw.oeel  ON pro2dw.wtelo.orderaltno = pro2dw.oeel.orderno
                              AND pro2dw.wtelo.orderaltsuf = pro2dw.oeel.ordersuf
                              AND pro2dw.wtelo.linealtno = pro2dw.oeel.lineno_

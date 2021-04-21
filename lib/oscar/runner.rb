@@ -22,22 +22,6 @@ module Oscar
 
     def run
       sos = get_so_nums
-      #p sos
-      #str_sos = sos.map(&:to_s)
-      #layup_items = Oscar::DBs::DB_SCHED[:tblLayupItems].join(:tblJobs, :JobID => :JobID)
-      #layup_lines =
-      #  layup_items.select(:LayupID, :LayupQnty, :LayupStagerNote, :WoNumber, :Done, :Printed)
-      #    .where(
-      #      (Sequel[{LayupExclude: false}]) |
-      #      (
-      #        Sequel[{LayupExclude: true}] &
-      #        Sequel.like(:LayupInstructions, '%SEND%')
-      #      )
-      #    )
-      #schedule_blob = layup_lines.where(JobSalesOrderNo: str_sos).all
-      #p schedule_blob
-      #abort
-
 
       sos.each do |so_num|
         so = SalesOrder.new(so_num)
@@ -59,6 +43,7 @@ module Oscar
         so_info << "#{so.weight}," # weight
         so_info << "#{so.city}," # city
         so_info << "#{so.state}," # state
+        so_info << "#{so.wt_warehouse.upcase}," # warehouse
         so_info << ","
         puts so_info
       end

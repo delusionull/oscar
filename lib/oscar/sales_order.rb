@@ -51,6 +51,10 @@ module Oscar
       @so_qry_lines.first[:zip]
     end
 
+    def wt_warehouse
+      @so_qry_lines.first[:wt_warehouse]
+    end
+
     def netprice
       @so_qry_lines.inject(0){|sum, ln| sum += ln[:net_price] if ln[:sequence_num] == 1; sum}
     end
@@ -66,14 +70,6 @@ module Oscar
     def weight
       layup_lines.lines.inject(0){|sum, ln| sum += ln.weight; sum}
       # add something here to include packaging weight
-    end
-
-    def skip
-      @so_qry_lines.count < 1 ? true : false
-    end
-
-    def skip_message
-      puts "SO #{@so_num} NOT FOUND. Skipping..."
     end
   end
 end
