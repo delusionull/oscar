@@ -2,22 +2,24 @@ require 'optimist'
 
 module Oscar
   class Options
-    attr_reader :test, :outfile
+    attr_reader :console, :outfile, :nocsv
 
     def initialize()
       opts = Optimist::options do
         banner "Usage:"
-        banner "#{File.basename($0)} [-t] [-o <outfile>]"
+        banner "#{File.basename($0)} [-c] [-o <outfile> | -n]"
         banner "\nOptions:"
 
-        opt :test, "Test run only; don't write data file."
+        opt :console, "Output to console."
         opt :outfile, "Output file name. Default: 'oscar.csv'",
           :type => :string,
           :default => 'oscar.csv'
+        opt :nocsv, "Do not create a CSV file; output only"
+        conflicts :outfile, :nocsv
       end
-
-      @test = opts[:test]
+      @console = opts[:console]
       @outfile = opts[:outfile]
+      @nocsv = opts[:nocsv]
     end
   end
 end

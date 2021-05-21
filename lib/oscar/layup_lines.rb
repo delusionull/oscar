@@ -5,7 +5,6 @@ module Oscar
     attr_reader :lines
 
     def initialize(so_qry_lines)
-      ap so_qry_lines if $opts.debug
       @lines = collect_lines(so_qry_lines)
     end
 

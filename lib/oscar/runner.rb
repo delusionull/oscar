@@ -6,6 +6,9 @@ require_relative 'queries'
 #require_relative 'pos'
 require_relative 'sales_order'
 require_relative 'schedule_so'
+require_relative 'screenprinter'
+require_relative 'csvwriter'
+require 'csv'
 
 class NilClass
   def method_missing(*a)
@@ -16,36 +19,19 @@ end
 module Oscar
   class Runner
     def initialize()
-      @opts = Options.new()
+      $opts = Options.new()
       $sos = get_all_sos
+      $csv_file = CSV.open("./#{$opts.outfile}", "wb") unless $opts.nocsv
     end
 
     def run
       sos = get_so_nums
-
       sos.each do |so_num|
         so = SalesOrder.new(so_num)
         schedule_so = ScheduleSO.new(so)
-        so_info = ''
-        so_info << "#{so.so_num},"
-        so_info << "#{so.so_suffix},"
-        so_info << "#{so.requested_ship_date},"
-        so_info << "#{flags(schedule_so, so)}," # flag
-        so_info << "#{(so.customer_num.to_s +
-                      (' ' + ' ' * (26 - so.customer_num.to_s.length)) +
-                       so.ship_to_name.to_s +
-                       ' ' * 25 + so.customer_po_num.to_s).strip},"
-        so_info << "," * 7
-        so_info << "#{schedule_so.lines_with_scheduled_and_total*(' '*25)}," # lines with scheduled and total
-        so_info << "#{schedule_so.lines_with_done_and_total*(' '*25)}," # work orders with done and total
-        so_info << "," # material with num
-        so_info << "#{so.netprice}," # cost
-        so_info << "#{so.weight}," # weight
-        so_info << "#{so.city}," # city
-        so_info << "#{so.state}," # state
-        so_info << "#{so.wt_warehouse.upcase}," # warehouse
-        so_info << ","
-        puts so_info
+        flgs = flags(schedule_so, so)
+        Screenprinter.print(so, schedule_so, flgs) if $opts.console || $opts.nocsv
+        CSVWriter.addline(so, schedule_so, flgs) unless $opts.nocsv
       end
     end
 
