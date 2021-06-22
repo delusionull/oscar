@@ -1,9 +1,7 @@
 require_relative 'options'
 require_relative 'dbs'
-#require_relative 'utils'
 require_relative 'constants'
 require_relative 'queries'
-#require_relative 'pos'
 require_relative 'sales_order'
 require_relative 'schedule_so'
 require_relative 'screenprinter'
@@ -22,22 +20,36 @@ module Oscar
     def initialize()
       $opts = Options.new()
       $sos = get_all_sos
+      $so_nums = get_so_nums
       $csv_file = CSV.open("./#{$opts.outfile}", "wb") unless $opts.nocsv
+      $layup_items = Oscar::DBs::DB_SCHED[:tblLayupItems].join(:tblJobs, :JobID => :JobID)
+      $layup_items_in_press = Oscar::DBs::DB_SCHED[:tblLayupItemXPress]
+      $layup_items_press_and_date = $layup_items_in_press.join(:tblLayupPress, :PressID => :PressID)
+      $layup_lines = 
+        $layup_items.select(:JobSalesOrderNo, :LayupID, :LayupQnty, :LayupStagerNote, :WoNumber, :WtNumber, :Done, :Printed)
+          .where(
+            (Sequel[{LayupExclude: false}]) |
+            (
+              Sequel[{LayupExclude: true}] &
+              Sequel.like(:LayupInstructions, '%SEND%')
+            )
+          ).where(JobSalesOrderNo: $so_nums.map(&:to_s)).all
     end
 
     def run
-      sos = get_so_nums
       puts ''
       pm = "\e[0;33m\u{15E7}"
       blinky, pinky, inky, clyde = "\e[0;31m\u{15E9} ", "\e[0;35m\u{15E9} ", "\e[0;34m\u{15E9} ", "\e[0;33m\u{15E9} "
+      blue = inky
       eyes = "\e[0m\u{221E} "
       dot = "\e[0m\u{FF65}"
       progressbar = ProgressBar.create(:format => "%a %b" + pm + dot * 6 + pinky + "\e[0m%i %p%% %t",
                                        :progress_mark => ' ',
                                        :remainder_mark => "\u{FF65}",
                                        :title => "done",
-                                       :total => sos.length) unless $opts.console || $opts.nocsv
-      sos.each do |so_num|
+                                       :total => $so_nums.length) unless $opts.console || $opts.nocsv
+      space = 0
+      $so_nums.each do |so_num|
         so = SalesOrder.new(so_num)
         schedule_so = ScheduleSO.new(so)
         flgs = flags(schedule_so, so)
@@ -45,12 +57,12 @@ module Oscar
         CSVWriter.addline(so, schedule_so, flgs) unless $opts.nocsv
         unless $opts.console || $opts.nocsv
           dotbuff = ((progressbar.total.to_f - progressbar.progress)*10/progressbar.total).to_i - 2
+          space += 1 if dotbuff <= 0
           progressbar.format =
             "%a %b" +
-            (dotbuff == 0 ? eyes : '') +
-            (dotbuff == -1 ? eyes + ' ' : '') +
+            (dotbuff == 0 || dotbuff == -1 ? eyes + ' '*space : ' '*space) +
             pm + dot * (dotbuff < 0 ? 0 : dotbuff) +
-            (dotbuff < 1 ? '' : (progressbar.progress.even? ? dot : '') + pinky) +
+            (dotbuff < 1 ? '' : + (dotbuff > 4 ? pinky : blue)) +
             "\e[0m%i %p%% %t"
           progressbar.increment
         end

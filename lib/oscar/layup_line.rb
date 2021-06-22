@@ -31,16 +31,6 @@ module Oscar
       @lines[0][:ord_line_num]
     end
 
-    def thick
-      Oscar::Constants::THICK[@pn_info[:thick]][:decimal]
-    end
-
-    def size
-      size = @pn_info[:size]
-      #raise "No panel size info found. Check FG part number." unless size
-      return size
-    end
-
     def core
       Core.new(@lines, @panel_config)
     end
@@ -55,14 +45,6 @@ module Oscar
 
     def weight
       (face.weight + back.weight + core.weight) * qty
-    end
-
-    def desc1
-      @lines[0][:fg_desc1].gsub(/[^\w ]/, '')
-    end
-
-    def desc2
-      @lines[0][:fg_desc2].gsub(/[^\w ]/, '')
     end
 
     def customer_pn

@@ -15,13 +15,6 @@ module Oscar
       codes.sum{|code| wt(code)}
     end
 
-    def instructions
-      get_core_instructions
-    end
-
-    def sizes
-    end
-
     private
 
     def get_codes(lns, pconf)
@@ -33,14 +26,6 @@ module Oscar
     def wt(code)
       Oscar::Constants::CORE_WEIGHTS[code] ||
       @lines.find { |h| h[:com_part_num] == code }[:prod_weight].to_i
-    end
-
-    def get_core_instructions
-      text = ''
-      text << " *GLUE #{codes*' + '} CORES TOGETHER*" if codes.count > 1
-      text << " *USE FIRE RATED GLUE*" if @panel_config.frglue
-      text << " *USE METAL GLUE*" if @panel_config.metalglue
-      return text
     end
   end
 end

@@ -1,5 +1,3 @@
-require_relative 'po'
-
 module Oscar
   class Laminate
     def initialize(lines, panel_config)
@@ -26,10 +24,6 @@ module Oscar
       @lines.find { |h| h[:sequence_num] == line_num }[:prod_qty_on_hand]
     end
 
-    def po
-      Oscar::Po.new(get_wonum, code, prodcat)  # material_code will be passed in here
-    end
-
     def prodcat
       return '' if @panel_config.rawface
       @lines.find { |h| h[:sequence_num] == line_num }[:product_category]
@@ -47,10 +41,6 @@ module Oscar
       @lines.find { |h| h[:com_part_num] == code }[:prod_weight].to_i
     end
 
-    def instructions
-      get_lam_instructions
-    end
-
     private
 
     def line_num
@@ -65,15 +55,6 @@ module Oscar
       else
         0
       end
-    end
-
-    def getsize(code)
-    end
-
-    def get_lam_instructions
-      text = ''
-      text << " *RAW 1 SIDE*" if raw
-      return text
     end
   end
 

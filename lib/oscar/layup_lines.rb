@@ -10,8 +10,6 @@ module Oscar
 
     private
 
-    #REFACTOR - we can't count on lines starting at 1 and not skipping.
-    # we need to refactor this beautiful piece of code.
     def collect_lines(lns)
       1.upto(lines_count(lns)).collect do |line_num|
         LayupLine.new(lns.find_all { |h| h[:ord_line_num] == line_num })

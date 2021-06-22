@@ -56,7 +56,7 @@ module Oscar
     end
 
     def netprice
-      @so_qry_lines.inject(0){|sum, ln| sum += ln[:net_price] if ln[:sequence_num] == 1; sum}
+      @so_qry_lines.inject(0){|sum, ln| sum += ln[:net_price] if ln[:sequence_num] == 1 && ln[:wo_suffix] == 0; sum}
     end
 
     def requested_ship_date
