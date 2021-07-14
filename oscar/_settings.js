@@ -5,7 +5,9 @@ var wa_site_location            = "Dallas";
 var oscar_index                 = 1;
 
 var oscar_data_file_name        = "oscar.csv";
+var oscar_forecast_file_name    = "press_forecast.csv";
 var oscar_sheet_name            = "current";
+var forecast_sheet_name         = "Forecast";
 var incoming_sheet_name         = "incoming";
 var vars_sheet_name             = "vars";
 var components_sheet_name       = "Components";

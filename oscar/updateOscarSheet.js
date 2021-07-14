@@ -5,6 +5,7 @@ function updateOscarSheet() {
   var oscar          = SpreadsheetApp.getActive();
   var oscar_sheet    = oscar.getSheetByName(oscar_sheet_name);
   var incoming_sheet = oscar.getSheetByName(incoming_sheet_name);
+  var forecast_sheet = oscar.getSheetByName(forecast_sheet_name);
   var vars_sheet     = oscar.getSheetByName(vars_sheet_name);
   var dr_sheet       = oscar.getSheetByName(drsheet_name);
   
@@ -18,6 +19,7 @@ function updateOscarSheet() {
   
   backupSheet(oscar_sheet, last_timestamp);
   importNewDataFromGdrive(incoming_sheet, oscar_data_file_name);
+  importNewDataFromGdrive(forecast_sheet, oscar_forecast_file_name);
   
   var oscar_sos = oscar_sheet.getRange(2, toNum(sales_order_col), oscar_sheet.getLastRow() - 1, 1).getValues();
   var incoming_sos = incoming_sheet.getRange(1, 1, incoming_sheet.getLastRow(), 1).getValues();

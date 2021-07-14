@@ -25,11 +25,14 @@ function backupSheet(sheet, name) {
   backup.hideSheet();
 }
 
-function importNewDataFromGdrive(incoming_sheet, oscar_data_file_name) {
-  var oscar_data_file = DriveApp.getFilesByName(oscar_data_file_name).next();
+function importNewDataFromGdrive(incoming_sheet, file_name) {
+  if (!(fileExistsOnGDriveRoot(file_name))) {
+    return false;
+  }
+  var oscar_data_file = DriveApp.getFilesByName(file_name).next();
   var csvData = Utilities.parseCsv(oscar_data_file.getBlob().getDataAsString());
   
-  incoming_sheet.clear();
+  incoming_sheet.clear({ contentsOnly: true });
   incoming_sheet.getRange(1, 1, csvData.length, csvData[0].length).setValues(csvData);
   
   if (DriveApp.getFoldersByName("OSCAR").hasNext()) {
@@ -38,7 +41,7 @@ function importNewDataFromGdrive(incoming_sheet, oscar_data_file_name) {
     var oscar_folder = DriveApp.createFolder("OSCAR");
   }
   
-  oscar_data_file.setName(oscar_data_file_name + "_" + isoDateString(new Date()) + "_" + isoTimeString() + ".bak");
+  oscar_data_file.setName(file_name + "_" + isoDateString(new Date()) + "_" + isoTimeString() + ".bak");
   oscar_folder.addFile(oscar_data_file);
   //root_folder.removeFile(oscar_data_file);
 }

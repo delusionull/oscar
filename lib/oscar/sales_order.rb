@@ -68,7 +68,7 @@ module Oscar
     end
 
     def weight
-      layup_lines.lines.inject(0){|sum, ln| sum += ln.weight; sum}
+      layup_lines.lines.map(&:weight).sum
       # add something here to include packaging weight
     end
   end
