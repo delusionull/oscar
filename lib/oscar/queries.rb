@@ -44,15 +44,18 @@ module Oscar
            pro2dw.icsp.descrip##2         AS prod_desc2,
            (SELECT pro2dw.icsp.weight
             FROM pro2dw.icsp
-            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod))
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod)
+            AND ROWNUM = 1)
                                           AS fg_weight,
            (SELECT pro2dw.icsp.descrip##1
             FROM pro2dw.icsp
-            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod))
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod)
+            AND ROWNUM = 1)
                                           AS fg_desc1,
            (SELECT pro2dw.icsp.descrip##2
             FROM pro2dw.icsp
-            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod))
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod)
+            AND ROWNUM = 1)
                                           AS fg_desc2
     FROM
       pro2dw.kpet
@@ -123,15 +126,18 @@ module Oscar
            pro2dw.icsp.descrip##2         AS prod_desc2,
            (SELECT pro2dw.icsp.weight
             FROM pro2dw.icsp
-            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod))
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod)
+            AND ROWNUM = 1)
                                           AS fg_weight,
            (SELECT pro2dw.icsp.descrip##1
             FROM pro2dw.icsp
-            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod))
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod)
+            AND ROWNUM = 1)
                                           AS fg_desc1,
            (SELECT pro2dw.icsp.descrip##2
             FROM pro2dw.icsp
-            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod))
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpet.shipprod)
+            AND ROWNUM = 1)
                                           AS fg_desc2
     FROM
       pro2dw.kpet

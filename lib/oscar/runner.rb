@@ -42,6 +42,7 @@ module Oscar
 
     def run
       unless $opts.quiet || $opts.console || $opts.nocsv
+        puts Time.now
         puts ''
         pm = "\e[0;33m\u{15E7}"
         blinky, pinky, inky, clyde = "\e[0;31m\u{15E9} ", "\e[0;35m\u{15E9} ", "\e[0;34m\u{15E9} ", "\e[0;33m\u{15E9} "

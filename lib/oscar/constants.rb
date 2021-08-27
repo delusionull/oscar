@@ -37,6 +37,7 @@ module Oscar
       "B1" => {:inches => "3096",  :shazam => 50, :pack_wt => 75,  :press_ht => 24},
       "B2" => {:inches => "30120", :shazam => 49, :pack_wt => 90,  :press_ht => 24},
       "B3" => {:inches => "30144", :shazam => 46, :pack_wt => 115, :press_ht => 24},
+      "D1" => {:inches => "3685",  :shazam => 64, :pack_wt => 85,  :press_ht => 24},
       "38" => {:inches => "3697",  :shazam => 43, :pack_wt => 90,  :press_ht => 24},
       "31" => {:inches => "36120", :shazam => 52, :pack_wt => 108, :press_ht => 24},
       "32" => {:inches => "36144", :shazam => 53, :pack_wt => 138, :press_ht => 24},
