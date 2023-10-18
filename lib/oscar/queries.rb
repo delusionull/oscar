@@ -38,6 +38,7 @@ module Oscar
            pro2dw.com.noteln##1           AS ord_line_comment,
       NVL(TRIM(pro2dw.icsw.binloc1),'--') AS prod_bin,
            pro2dw.icsw.binloc2            AS prod_detail,
+           pro2dw.icsw.statustype         AS prod_stattype,
       CAST(pro2dw.icsw.qtyonhand AS INT)  AS prod_qty_on_hand,
            pro2dw.icsp.weight             AS prod_weight,
            pro2dw.icsp.descrip##1         AS prod_desc1,
@@ -120,6 +121,7 @@ module Oscar
            pro2dw.com.noteln##1           AS ord_line_comment,
       NVL(TRIM(pro2dw.icsw.binloc1),'--') AS prod_bin,
            pro2dw.icsw.binloc2            AS prod_detail,
+           pro2dw.icsw.statustype         AS prod_stattype,
       CAST(pro2dw.icsw.qtyonhand AS INT)  AS prod_qty_on_hand,
            pro2dw.icsp.weight             AS prod_weight,
            pro2dw.icsp.descrip##1         AS prod_desc1,
@@ -169,6 +171,85 @@ module Oscar
        AND pro2dw.kpet.whse LIKE 'DAL'
        AND UPPER(pro2dw.kpet.ordertype) LIKE 'T'
        AND pro2dw.icsw.whse = 'DAL' ) )
+    UNION
+    (SELECT
+      CAST(pro2dw.oeel.orderno AS INT)    AS sales_order,
+      CAST(pro2dw.oeel.ordersuf AS INT)   AS suffix,
+      CAST(pro2dw.oeel.lineno_ AS INT)    AS ord_line_num,
+           pro2dw.oeeh.custpo             AS customer_po_num,
+      CAST(0 AS INT)                      AS wo_num,
+      CAST(0 AS INT)                      AS wo_suffix,
+      CAST(0 AS INT)                      AS company_num,
+      CAST(0 AS INT)                      AS wt_num,
+      CAST(0 AS INT)                      AS wt_suffix,
+      NULL                                AS wt_warehouse,
+      CAST(0 AS INT)                      AS wo_stage_code,
+           pro2dw.oeel.whse               AS warehouse,
+           pro2dw.oeel.shipprod           AS part_num,
+      UPPER(pro2dw.kpsk.comprod)          AS com_part_num,
+      CAST(pro2dw.oeel.qtyord AS INT)     AS component_qty,
+           pro2dw.icsp.prodcat            AS product_category,
+      CAST(pro2dw.kpsk.seqno AS INT)      AS sequence_num,
+           pro2dw.oeel.enterdt            AS order_date,
+           pro2dw.oeeh.reqshipdt          AS requested_ship_date,
+      CAST(pro2dw.oeeh.stagecd AS INT)    AS so_stage_code,
+      CAST(pro2dw.oeel.qtyord * pro2dw.kpsk.qtyneeded AS INT)     AS wo_line_qty,
+      CAST(0 AS INT)                      AS wo_line_qty_shipped,
+           NULL                           AS wo_type,
+      CAST(pro2dw.oeel.price AS FLOAT)    AS line_item_price,
+      CAST(pro2dw.oeel.netord AS FLOAT)   AS net_price,
+           pro2dw.oeel.whse               AS selling_warehouse,
+           pro2dw.oeeh.custno             AS customer_num,
+           pro2dw.oeeh.shiptonm           AS ship_to_name,
+           pro2dw.oeeh.shiptoaddr##1      AS address1,
+           pro2dw.oeeh.shiptoaddr##2      AS address2,
+           pro2dw.oeeh.shiptocity         AS city,
+           pro2dw.oeeh.shiptost           AS state,
+           pro2dw.oeeh.shiptozip          AS zip,
+           pro2dw.com.noteln##1           AS ord_line_comment,
+      NVL(TRIM(pro2dw.w.binloc1),'--')    AS prod_bin,
+           pro2dw.w.binloc2               AS prod_detail,
+           pro2dw.w.statustype            AS prod_stattype,
+      CAST(pro2dw.w.qtyonhand AS INT)     AS prod_qty_on_hand,
+           pro2dw.icsp.weight             AS prod_weight,
+           pro2dw.icsp.descrip##1         AS prod_desc1,
+           pro2dw.icsp.descrip##2         AS prod_desc2,
+           (SELECT pro2dw.icsp.weight
+            FROM pro2dw.icsp
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpsk.comprod)
+            AND ROWNUM = 1)
+                                          AS fg_weight,
+           (SELECT pro2dw.icsp.descrip##1
+            FROM pro2dw.icsp
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpsk.comprod)
+            AND ROWNUM = 1)
+                                          AS fg_desc1,
+           (SELECT pro2dw.icsp.descrip##2
+            FROM pro2dw.icsp
+            WHERE UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.kpsk.comprod)
+            AND ROWNUM = 1)
+                                          AS fg_desc2
+    FROM
+      pro2dw.oeel
+      INNER JOIN pro2dw.oeeh  ON pro2dw.oeel.cono = pro2dw.oeeh.cono
+                             AND pro2dw.oeel.orderno = pro2dw.oeeh.orderno
+                             AND pro2dw.oeel.ordersuf = pro2dw.oeeh.ordersuf
+      INNER JOIN pro2dw.kpsk  ON pro2dw.kpsk.prod = pro2dw.oeel.shipprod
+                             AND pro2dw.kpsk.cono = pro2dw.oeel.cono
+      LEFT JOIN pro2dw.com    ON pro2dw.oeel.orderno = pro2dw.com.orderno
+                             AND pro2dw.oeel.ordersuf = pro2dw.com.ordersuf
+                             AND pro2dw.oeel.lineno_ = pro2dw.com.lineno_
+      INNER JOIN pro2dw.icsp  ON UPPER(pro2dw.kpsk.comprod) = UPPER(pro2dw.icsp.prod)
+      INNER JOIN pro2dw.icsw w ON pro2dw.icsp.cono = pro2dw.w.cono
+                             AND UPPER(pro2dw.icsp.prod) = UPPER(pro2dw.w.prod)
+      INNER JOIN pro2dw.icsw W2  ON pro2dw.oeel.cono = pro2dw.W2.cono 
+                             AND pro2dw.oeel.shipprod = pro2dw.W2.prod
+    WHERE
+     ( pro2dw.oeeh.stagecd in (1, 2)
+       AND UPPER(pro2dw.oeel.statustype) LIKE 'A'
+       AND UPPER(pro2dw.W2.arptype)= 'K'
+       AND pro2dw.w.whse = 'DAL'
+       AND UPPER(pro2dw.oeel.prodcat)IN ('LAPK', 'VNPK') ))
     EOS
   end
 end

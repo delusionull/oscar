@@ -17,8 +17,8 @@ module Oscar
     }
 
     CORE_CODES = %w(
-      PB PF P1 PM PS PN PR MD MB MF MG MM MS MN ML XN XS YA VM
-      Y1 YA YB YC YG YL YM YN YR YS YW YX DO CC VP CS CUST ZZ
+      PB PF P1 PM PS PN PR MD MB MF MG MM MR MS MN ML XN XS YA VM
+      Y1 YA YB YC YG YL YM YN YR YS YU YV YW YX DO CC VP CS CUST ZZ
     )
 
     FACE_CODES = %w( BK LW LP LB LA LG RE RA CS
@@ -38,7 +38,7 @@ module Oscar
       "B2" => {:inches => "30120", :shazam => 49, :pack_wt => 90,  :press_ht => 24},
       "B3" => {:inches => "30144", :shazam => 46, :pack_wt => 115, :press_ht => 24},
       "D1" => {:inches => "3685",  :shazam => 64, :pack_wt => 85,  :press_ht => 24},
-      "38" => {:inches => "3697",  :shazam => 43, :pack_wt => 90,  :press_ht => 24},
+      "38" => {:inches => "3696",  :shazam => 51, :pack_wt => 90,  :press_ht => 24},
       "31" => {:inches => "36120", :shazam => 52, :pack_wt => 108, :press_ht => 24},
       "32" => {:inches => "36144", :shazam => 53, :pack_wt => 138, :press_ht => 24},
       "M4" => {:inches => "4878",  :shazam => 61, :pack_wt => 102, :press_ht => 24},
@@ -71,7 +71,7 @@ module Oscar
 
     THICK = {
       "00" => {:decimal => 0.0,     :fraction => "0"},
-      "02" => {:decimal => 0.0625,  :fraction => "1/16"},
+      "02" => {:decimal => 0.09,    :fraction => "3/32"},
       "03" => {:decimal => 0.125,   :fraction => "1/8"},
       "05" => {:decimal => 0.1875,  :fraction => "3/16"},
       "06" => {:decimal => 0.25,    :fraction => "1/4"},
@@ -80,6 +80,7 @@ module Oscar
       "10" => {:decimal => 0.375,   :fraction => "3/8"},
       "11" => {:decimal => 0.4375,  :fraction => "7/16"},
       "13" => {:decimal => 0.5,     :fraction => "1/2"},
+      "12" => {:decimal => 0.5,     :fraction => "1/2"},
       "14" => {:decimal => 0.5625,  :fraction => "9/16"},
       "16" => {:decimal => 0.625,   :fraction => "5/8"},
       "17" => {:decimal => 0.6875,  :fraction => "11/16"},
