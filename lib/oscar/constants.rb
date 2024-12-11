@@ -43,6 +43,7 @@ module Oscar
       "32" => {:inches => "36144", :shazam => 53, :pack_wt => 138, :press_ht => 24},
       "M4" => {:inches => "4878",  :shazam => 61, :pack_wt => 102, :press_ht => 24},
       "M8" => {:inches => "3896",  :shazam => 62, :pack_wt => 90,  :press_ht => 24},
+      "46" => {:inches => "4872",  :shazam => 63, :pack_wt => 90,  :press_ht => 24},
       "48" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120, :press_ht => 24},
       "41" => {:inches => "48120", :shazam =>  2, :pack_wt => 144, :press_ht => 24},
       "42" => {:inches => "48144", :shazam =>  3, :pack_wt => 184, :press_ht => 24},
@@ -55,6 +56,7 @@ module Oscar
       "TA" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120, :press_ht => 24},
       "TB" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120, :press_ht => 24},
       "TC" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120, :press_ht => 24},
+      "00" => {:inches => "60108", :shazam => 60, :pack_wt => 120, :press_ht => 24},
     }
 
     AFI_INFOR_SIZE = {

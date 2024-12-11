@@ -14,6 +14,7 @@ function updateOscarSheet() {
   if (checkForNewData() == false) {return};
   oscarSheetIsFirst(oscar, oscar_sheet);
   
+  var friendly_curr_timestamp = isoDateString(undefined ,1) + "_" + isoTimeString(undefined ,1);
   var curr_timestamp = isoDateString() + "_" + isoTimeString();
   var last_timestamp = vars_sheet.getRange(vars_sheet_last_timestamp).getValue();
   
@@ -26,7 +27,7 @@ function updateOscarSheet() {
   updateAddOrRemoveRows(oscar_sheet, incoming_sheet, dr_sheet, oscar_sos, incoming_sos);
   
   setVarsSheetValues(vars_sheet, last_timestamp, curr_timestamp);
-  renameOscarWithCurrentTimestamp(oscar, curr_timestamp);
+  renameOscarWithCurrentTimestamp(oscar, friendly_curr_timestamp);
   
   freeze1Row1Col(oscar_sheet, false);
   fancySort(oscar_sheet);

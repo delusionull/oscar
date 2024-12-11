@@ -16,7 +16,8 @@ function findOscarSheetIssueText(issue_so, osc_relevant_cells) {
 
 function updateIssueText(issue_so, customer, osc_issue, isu_note, ship_date, isu_relevant_cells, issues_sheet) {
   var index = ArrayLib.indexOf(isu_relevant_cells, 0, issue_so);
-  issues_sheet.getRange(index+2, toNum(isu_ship_date_col)).setValue(ship_date);
+  //issues_sheet.getRange(index+2, toNum(isu_ship_date_col)).setValue(ship_date);
+  issues_sheet.getRange(index+2, toNum(isu_ship_date_col)).setFormula("=INDEX(current!A:C, MATCH(INDIRECT(\"A\"&(ROW())), current!A:A, 0), 3)");
   issues_sheet.getRange(index+2, toNum(isu_customer_col)).setValue(customer);
   issues_sheet.getRange(index+2, toNum(isu_sales_order_col), 1, 4).setBackground("white")
                                                                   .setFontColor("black");
@@ -32,7 +33,8 @@ function addIssue(issue_so, customer, osc_issue, isu_note, ship_date, issues_she
   var emptyrow = issues_sheet.getLastRow()+1;
   issues_sheet.getRange(emptyrow, toNum(isu_sales_order_col)).setValue(issue_so);
   issues_sheet.getRange(emptyrow, toNum(isu_customer_col)).setValue(customer);
-  issues_sheet.getRange(emptyrow, toNum(isu_ship_date_col)).setValue(ship_date);
+  //issues_sheet.getRange(emptyrow, toNum(isu_ship_date_col)).setValue(ship_date);
+  issues_sheet.getRange(emptyrow, toNum(isu_ship_date_col)).setFormula("=INDEX(current!A:C, MATCH(INDIRECT(\"A\"&(ROW())), current!A:A, 0), 3)");
   issues_sheet.getRange(emptyrow, toNum(isu_issue_col)).setValue(osc_issue)
                                                        .setBackground("#FF6969")
                                                        .setFontWeight("bold")
