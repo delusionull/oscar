@@ -42,20 +42,26 @@ function addIssue(issue_so, customer, osc_issue, isu_note, ship_date, issues_she
   issues_sheet.getRange(emptyrow, toNum(isu_resolved_col)).insertCheckboxes();
 }
 
-function sortIssuesSheet(issues_sheet) {
-  var is_range = issues_sheet.getRange("A2:" + isu_sheet_last_col);
+function sortIssuesSheet(isu_sht) {
+  var is_range = isu_sht.getRange("A2:" + isu_sheet_last_col);
   is_range.sort([{column: toNum(isu_ship_date_col),    ascending: true},
                  {column: toNum(isu_customer_col),     ascending: true},
                  {column: toNum(isu_sales_order_col),  ascending: true}]);
 }
 
-function logAndRemoveIssue(edit, isu_relevant_cells, issues_sheet) {
-  var issues_log_sheet = SpreadsheetApp.getActive().getSheetByName(issues_log_sheet_name);
-  var emptyrow = issues_log_sheet.getLastRow()+1;
+function logIssue(edit, isu_relevant_cells) {
   var issue_so = edit.range.getSheet().getRange(edit.range.getRow(), toNum(sales_order_col)).getValue();
   var index = ArrayLib.indexOf(isu_relevant_cells, 0, issue_so);
-  var isu_sht_row = index+2;
-  if ( isu_sht_row == 1 ) { return };
+  var issue_sheet_row = index+2;
+  if ( issue_sheet_row == 1 ) { return };
+  logAndRemoveIssue(issue_sheet_row);
+}
+
+function logAndRemoveIssue(isu_sht_row) {
+  var oscar        = SpreadsheetApp.getActive();
+  var issues_sheet = oscar.getSheetByName(issues_sheet_name);
+  var issues_log_sheet = SpreadsheetApp.getActive().getSheetByName(issues_log_sheet_name);
+  var emptyrow = issues_log_sheet.getLastRow()+1;
   issues_sheet.getRange(isu_sht_row, 1, 1, toNum(isu_sheet_last_col)).copyTo(issues_log_sheet.getRange(emptyrow, 1));
   issues_log_sheet.getRange(emptyrow, toNum(isu_log_resolved_time_col)).setValue( isoDateString(_, 1) + " " + isoTimeString(_, 1) );
   issues_sheet.getRange(isu_sht_row, 1, 1, toNum(isu_sheet_last_col)).clearContent()
@@ -64,13 +70,14 @@ function logAndRemoveIssue(edit, isu_relevant_cells, issues_sheet) {
                                                                      .setBackground("white")
                                                                      .setFontColor("black");
   issues_sheet.getRange(isu_sht_row, 1, 1, toNum(isu_resolved_col)).removeCheckboxes();
+  sortIssuesSheet(issues_sheet);
   if ( allIssuesHaveBeenAnswered(issues_sheet) ) { highlightOpsHeader("white") };
+
 }
 
 function issuesSheetHandler(edit) {
   var oscar        = SpreadsheetApp.getActive();
   var issues_sheet = oscar.getSheetByName(issues_sheet_name);
-  var oscar_sheet  = oscar.getSheetByName(oscar_sheet_name);
   
   if ( edit.range.getColumn() == toNum(isu_resolved_col) ) {
     if ( edit.range.isChecked() ) {
@@ -89,7 +96,7 @@ function issuesSheetHandler(edit) {
       var ui = SpreadsheetApp.getUi();
       var result = ui.alert(
         'Please confirm',
-        'Did your answer completely resolve this issue?',
+        'Did your answer COMPLETELY resolve this issue?',
         ui.ButtonSet.YES_NO);
 
       if (result == ui.Button.YES) {
@@ -161,9 +168,30 @@ function highlightOpsHeader(color) {
   ss_range.setValue("Ops Notes");
 }
 
-function manuallyDeleteIssue() {
+function archiveOrphanedIssue() {
   var ss_name = SpreadsheetApp.getActiveSheet().getName();
   var oscar = SpreadsheetApp.getActive();
   var isu_sheet = oscar.getSheetByName(issues_sheet_name);
   var cur_sheet = oscar.getSheetByName(oscar_sheet_name);
-}
+  
+  if (ss_name == issues_sheet_name ) {
+    var so = isu_sheet.getRange(isu_sheet.getCurrentCell().getRow(), toNum(isu_sales_order_col)).getValue();
+    if (so == "" || so == "SO") { say("Please select an orphaned ISSUE to archive."); return }
+
+    const TXTFNDR = cur_sheet.createTextFinder(so);
+    if (!TXTFNDR.findNext()) {
+      var issue_sheet_row = isu_sheet.getCurrentCell().getRowIndex();
+      logAndRemoveIssue(issue_sheet_row)
+      return;
+    } else {
+      say("The selected ISSUE sales order exists on the 'current' tab.\n\n" +
+       "This special archive function is reserved for *orphaned* ISSUEs.\n\n" +
+       "To archive non-orphaned ISSUEs, use the standard method of ISSUE archival.\n" +
+       "If you don't know what that is, you shouldn't be doing it.");
+      return;
+    };
+  } else {
+    say("This function only works from the ISSUES tab.")
+    return;
+  }
+};

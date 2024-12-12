@@ -12,7 +12,7 @@
   "sheets": {
     "macros": [{
       "menuName": "jump to issue on other tab",
-      "functionName": "jumptoissueonothertab",
+      "functionName": "jumpToIssueOnOtherTab",
       "defaultShortcut": "Ctrl+Alt+Shift+9"
     }]
   }

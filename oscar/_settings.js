@@ -1,5 +1,7 @@
 // Global OSCAR settings go here.
 
+var override_on                 = false;
+
 var wa_site_location            = "Dallas";
 
 var oscar_index                 = 1;
@@ -66,8 +68,6 @@ var isu_sheet_last_col          = "G";
 var vars_sheet_today_date       = "B1";
 var vars_sheet_recent_bak       = "$B$2";
 var vars_sheet_last_timestamp   = "B3";
-
-var override_on                 = false;
 
 var oscar_maint_coders          = protected_oscar_maint_coders(); 
 var oscar_editors               = protected_oscar_editors();

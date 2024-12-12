@@ -98,14 +98,11 @@ function getWeekDay(date){
   return days[dayNumber];
 }
 
-// Pass a sheet, column, and search string;
-// Returns row of first matching cell.
-function findInColumn(sheet, col, data) {
-  var column = sheet.getRange(col + ":" + col);  // like A:A
-  var values = column.getValues(); 
-  var row = 0;
-  while ( values[row] && values[row][0] !== data ) { row++ }
-  if (values[row][0] === data) { return row+1 } else { return -1 }    
+// Returns row of first matching cell, or -1 if not found.
+function findInColumn(sheet, col, findstr) {
+  const column = sheet.getRange(col + ":" + col);  // like A:A
+  const findr = column.createTextFinder(findstr).findNext();
+  if (findr == null) { return -1 } else { return findr.getRow() }
 }
 
 function sortOscarSheet() {

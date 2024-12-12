@@ -17,7 +17,7 @@ function onOpen() {
     .addItem('Backup OSCAR...', 'backupOscar')
     .addItem('Sort OSCAR...', 'sortOscarSheet')
     .addItem('Reset Formatting...', 'resetOscarFormatting')
-    .addItem('Delete Highlighted Issue...', 'manuallyDeleteIssue'))
+    .addItem('Archive Highlighted Orphaned Issue...', 'archiveOrphanedIssue'))
   .addToUi();
 }
 
