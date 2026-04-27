@@ -14,7 +14,7 @@ function updateOscarSheet() {
   if (checkForNewData() == false) {return};
   oscarSheetIsFirst(oscar, oscar_sheet);
   
-  var friendly_curr_timestamp = isoDateString(undefined ,1) + "_" + isoTimeString(undefined ,1);
+  var friendly_curr_timestamp = isoDateString(new Date() ,1) + "_" + isoTimeString(new Date(),1);
   var curr_timestamp = isoDateString() + "_" + isoTimeString();
   var last_timestamp = vars_sheet.getRange(vars_sheet_last_timestamp).getValue();
   

@@ -1,6 +1,6 @@
 // Set a note on the edited cell to indicate when it was changed.
 function setCellEditNote(edit) {
-  var time_of_edit = ( isoDateString() + " " + isoTimeString(_, 1) );
+  var time_of_edit = ( isoDateString() + " " + isoTimeString(new Date(), 1) );
   var old_value = ( Boolean(edit.oldValue) ? edit.oldValue : "blank" );
   var prev_cell_note = ( edit.range.getNote() ? edit.range.getNote() : "[original value]:\n" + old_value );
   var new_note = ( cellDeletedText(edit) || edit.range.getValue() );

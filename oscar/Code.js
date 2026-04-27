@@ -3,6 +3,7 @@
 function onEdit(e){
   var email = Session.getActiveUser().getEmail();
   if (isIssuesSheetEdit(e)) { issuesSheetHandler(e) };
+  //new 9/19/25
   if ( isNonMainSheetEdit(e) || isMultiCellEdit(e) || isNonEdit(e) || override() ) { return };
   if (undoProhibitedEdit(e)) { return };
   setCellEditNote(e);
@@ -24,8 +25,8 @@ function onOpen() {
 function triggerEveryTwoHours() {
   updateShippingSheets();
   var oscar = SpreadsheetApp.getActive();
-  var vars_sheet = oscar.getSheetByName(vars_sheet_name)
-  vars_sheet.getRange(vars_sheet_today_date).setValue(isoDateString(_, 1));
+  var vars_sheet = oscar.getSheetByName(vars_sheet_name);
+  vars_sheet.getRange(vars_sheet_today_date).setValue(isoDateString(new Date(), 1));
 }
 
 function triggerEveryHour() {
@@ -34,8 +35,8 @@ function triggerEveryHour() {
 
 function triggerEveryDayAt2Am() {
   var oscar = SpreadsheetApp.getActive();
-  var oscar_sheet = oscar.getSheetByName(oscar_sheet_name)
-  var issues_sheet = oscar.getSheetByName(issues_sheet_name)
+  var oscar_sheet = oscar.getSheetByName(oscar_sheet_name);
+  var issues_sheet = oscar.getSheetByName(issues_sheet_name);
   normalizeFontOfRange(oscar_sheet, oscar_edit_range);
   normalizeFontOfRange(issues_sheet, isu_reply_col + ":" + isu_reply_col);
 }

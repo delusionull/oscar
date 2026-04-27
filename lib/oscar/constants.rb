@@ -33,6 +33,7 @@ module Oscar
     # 2 lbs/ft of runner
     # 5 runners for 12 ft bundles
     # 3 runners for all other sizes
+    # new strategy: assume 4#/sq ft (1in) i.e. board ft
     SIZE = {
       "B1" => {:inches => "3096",  :shazam => 50, :pack_wt => 75,  :press_ht => 24},
       "B2" => {:inches => "30120", :shazam => 49, :pack_wt => 90,  :press_ht => 24},
@@ -45,18 +46,20 @@ module Oscar
       "M8" => {:inches => "3896",  :shazam => 62, :pack_wt => 90,  :press_ht => 24},
       "46" => {:inches => "4872",  :shazam => 63, :pack_wt => 90,  :press_ht => 24},
       "48" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120, :press_ht => 24},
+      "49" => {:inches => "48108", :shazam => 59, :pack_wt => 132, :press_ht => 24},
       "41" => {:inches => "48120", :shazam =>  2, :pack_wt => 144, :press_ht => 24},
       "42" => {:inches => "48144", :shazam =>  3, :pack_wt => 184, :press_ht => 24},
       "AA" => {:inches => "51120", :shazam => 47, :pack_wt => 144, :press_ht => 24},
       "55" => {:inches => "6060",  :shazam => 57, :pack_wt => 105, :press_ht => 24},
       "56" => {:inches => "6072",  :shazam => 42, :pack_wt => 120, :press_ht => 24},
       "58" => {:inches => "6096",  :shazam =>  4, :pack_wt => 150, :press_ht => 24},
-      "51" => {:inches => "60120", :shazam =>  5, :pack_wt => 180, :press_ht => 20},
-      "52" => {:inches => "60144", :shazam =>  6, :pack_wt => 230, :press_ht => 15},
+      "51" => {:inches => "60120", :shazam =>  5, :pack_wt => 188, :press_ht => 20},
+      "52" => {:inches => "60144", :shazam =>  6, :pack_wt => 225, :press_ht => 15},
       "TA" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120, :press_ht => 24},
       "TB" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120, :press_ht => 24},
       "TC" => {:inches => "4896",  :shazam =>  1, :pack_wt => 120, :press_ht => 24},
-      "00" => {:inches => "60108", :shazam => 60, :pack_wt => 120, :press_ht => 24},
+      "59" => {:inches => "60108", :shazam => 60, :pack_wt => 120, :press_ht => 24},
+      "SP" => {:inches => "00",    :shazam =>  7, :pack_wt => 120, :press_ht => 24},
     }
 
     AFI_INFOR_SIZE = {

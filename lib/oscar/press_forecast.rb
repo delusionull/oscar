@@ -11,7 +11,7 @@ module Oscar
     private
 
     def future_dates
-      $layup_lines.map{|x| x[:LayupGlueOverride]}.uniq.sort.reject {|x| x <= Time.now}
+      $layup_lines.map{|x| x[:LayupGlueOverride]}.compact.uniq.sort.reject {|x| x <= Time.now}
     end
 
     def presses_on_date(date)
@@ -20,7 +20,7 @@ module Oscar
     end
 
     def num_presses(dl)
-      dl.map{|x| x[:LayupSizeID]}.uniq.sort.collect do |sz|
+      dl.map{|x| x[:LayupSizeID]}.compact.uniq.sort.collect do |sz|
         ( tot_height(dl, sz) / max_height(sz) ).ceil
       end.sum
     end

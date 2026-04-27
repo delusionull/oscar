@@ -1,19 +1,23 @@
 {
   "timeZone": "America/Chicago",
   "dependencies": {
-    "libraries": [{
-      "userSymbol": "ArrayLib",
-      "libraryId": "1r9wNWbta3ebuYL4ENAdIp4UYKmyNiWf1AqsXYzfXduRHhTZEeTxS9MhZ",
-      "version": "23"
-    }]
+    "libraries": [
+      {
+        "userSymbol": "ArrayLib",
+        "libraryId": "1r9wNWbta3ebuYL4ENAdIp4UYKmyNiWf1AqsXYzfXduRHhTZEeTxS9MhZ",
+        "version": "23"
+      }
+    ]
   },
   "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "DEPRECATED_ES5",
+  "runtimeVersion": "V8",
   "sheets": {
-    "macros": [{
-      "menuName": "jump to issue on other tab",
-      "functionName": "jumpToIssueOnOtherTab",
-      "defaultShortcut": "Ctrl+Alt+Shift+9"
-    }]
+    "macros": [
+      {
+        "menuName": "jump to issue on other tab",
+        "functionName": "jumpToIssueOnOtherTab",
+        "defaultShortcut": "Ctrl+Alt+Shift+9"
+      }
+    ]
   }
 }

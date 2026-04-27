@@ -63,7 +63,7 @@ function logAndRemoveIssue(isu_sht_row) {
   var issues_log_sheet = SpreadsheetApp.getActive().getSheetByName(issues_log_sheet_name);
   var emptyrow = issues_log_sheet.getLastRow()+1;
   issues_sheet.getRange(isu_sht_row, 1, 1, toNum(isu_sheet_last_col)).copyTo(issues_log_sheet.getRange(emptyrow, 1));
-  issues_log_sheet.getRange(emptyrow, toNum(isu_log_resolved_time_col)).setValue( isoDateString(_, 1) + " " + isoTimeString(_, 1) );
+  issues_log_sheet.getRange(emptyrow, toNum(isu_log_resolved_time_col)).setValue( isoDateString(new Date(), 1) + " " + isoTimeString(new Date(), 1) );
   issues_sheet.getRange(isu_sht_row, 1, 1, toNum(isu_sheet_last_col)).clearContent()
                                                                      .clearNote()
                                                                      .clear({commentsOnly: true})
@@ -146,8 +146,9 @@ function allIssuesHaveBeenAnswered(issues_sheet) {
   if ( noIssuesExist(issues_sheet) ) { return true };
   var issue_cells = issues_sheet.getRange(2, toNum(isu_issue_col), issues_sheet.getLastRow()-1, 1);
   var bgColors = issue_cells.getBackgrounds();
-  for (var row in bgColors) {
-    if (bgColors[row][0] == "#FF6969") { return false };
+  // V8: for (const row of bgColors) {
+  for (const row of bgColors) {
+    if (row[0] === "#FF6969") { return false };
   }
   return true;
 }

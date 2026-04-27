@@ -56,10 +56,21 @@ function toaster(msg, title, time) {
 }
 
 // Popup "Okay" dialog box with message
-function say(msg) {
-  msg   = (msg   === undefined ? "" : msg);
-  var ui = SpreadsheetApp.getUi();
-  ui.alert(msg);
+// function say(msg) {
+//   const ui = SpreadsheetApp.getUi();
+//   msg   = (msg   === undefined ? "" : msg);
+//   ui.alert(msg);
+// }
+function say(titleOrMessage, message) {
+  const ui = SpreadsheetApp.getUi();
+
+  if (arguments.length === 1) {
+    ui.alert(titleOrMessage);
+  } else if (arguments.length === 2) {
+    ui.alert("⚠️ " + titleOrMessage, message, ui.ButtonSet.OK);
+  } else {
+    ui.alert(""); // fallback, shouldn't be needed
+  }
 }
 
 // Convert a one or two digit column letter to its column number
@@ -137,7 +148,6 @@ function rowsWithRegexInColumn(regex, column, sheet) {
   }
   return rows_array;
 }
-
 
 // Testing stuff below here:
 

@@ -4,7 +4,7 @@ function issueHandler(edit) {
   var oscar        = SpreadsheetApp.getActive();
   var issues_sheet = oscar.getSheetByName(issues_sheet_name);
   var oscar_sheet  = oscar.getSheetByName(oscar_sheet_name);
-  var time_issue_added = ( isoDateString(_, 1) + " " + isoTimeString(_, 1) );
+  var time_issue_added = ( isoDateString(new Date(), 1) + " " + isoTimeString(new Date(), 1) );
   var issue_rows = rowsWithRegexInColumn('^ISSUE!*', ops_col, oscar_sheet);
   var cur_isu_txt = edit.range.getValue();
   var old_isu_txt = edit.oldValue;
@@ -25,13 +25,14 @@ function issueHandler(edit) {
     return;
   };
 
-  for (row in issue_rows) {
-    var issue_so = osc_relevant_cells[issue_rows[row]-2][toNum(sales_order_col)-1];
-    var osc_issue = findOscarSheetIssueText(issue_so, osc_relevant_cells);
-    var customer = osc_relevant_cells[issue_rows[row]-2][toNum(customer_col)-1];
-    var ship_date = osc_relevant_cells[issue_rows[row]-2][toNum(shipdate_col)-1];
+  // V8: for (const row of issue_rows) {
+  for (const row of issue_rows) {
+    const issue_so = osc_relevant_cells[row - 2][toNum(sales_order_col) - 1];
+    const osc_issue = findOscarSheetIssueText(issue_so, osc_relevant_cells);
+    const customer = osc_relevant_cells[row - 2][toNum(customer_col) - 1];
+    const ship_date = osc_relevant_cells[row - 2][toNum(shipdate_col) - 1];
     if ( issueExists(issue_so, isu_relevant_cells) ) {
-      var isu_issue = findIssueSheetIssueText(issue_so, isu_relevant_cells);
+      const isu_issue = findIssueSheetIssueText(issue_so, isu_relevant_cells);
       if ( issueTextChanged(osc_issue, isu_issue) ) {
         Logger.log("so: " + issue_so + "; oscar issue: " + osc_issue + "; issues issue: " + isu_issue);
         updateIssueText(issue_so, customer, osc_issue, isu_note, ship_date, isu_relevant_cells, issues_sheet);

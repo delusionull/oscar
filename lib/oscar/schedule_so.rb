@@ -108,12 +108,13 @@ module Oscar
       pd = []
       layup_ids(so, line).each do |id|
         presses_and_dates = $layup_items_press_and_date
-          .select(:PressNumber, :PressDate, :PressSizesID)
+          .select(:PressNumber, :PressDate, :PressSizesID, :PressGroup)
           .where(LayupID: id).all
         presses_and_dates.each{ |x|
-          press = "P#{x[:PressNumber].to_s}_"
+          group = ( x[:PressGroup] > 1 ? "g#{x[:PressGroup]}_" : '' )
+          pressandgrp = "#{group}p#{x[:PressNumber].to_s}_"
           date = "#{x[:PressDate].strftime("%-m/%-d")}"
-          pd << "#{press}#{date}"
+          pd << "#{pressandgrp}#{date}"
         } unless presses_and_dates.empty?
       end
       "#{pd.compact.empty? ? '' : '(' + pd.compact.uniq*';'.to_s + ')'}"

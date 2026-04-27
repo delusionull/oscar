@@ -15,7 +15,7 @@ function createOscarBackup(oscar) {
   var oscar_id = oscar.getId();
   var file = DriveApp.getFileById(oscar_id);
   var backup_file;
-  backup_file = file.makeCopy(wa_site_location + ' OSCAR Backup: ' + isoDateString(_, 1));
+  backup_file = file.makeCopy(wa_site_location + ' OSCAR Backup: ' + isoDateString(new Date(), 1));
 
   if (DriveApp.getFoldersByName("OSCAR").hasNext()) {
     var oscar_folder = DriveApp.getFoldersByName("OSCAR").next();

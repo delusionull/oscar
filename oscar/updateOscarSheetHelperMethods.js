@@ -16,7 +16,7 @@ function backupSheet(sheet, name) {
   var lookatme_sheet = sheet.getParent().getSheetByName(lookatme_sheet_name);
   unHideAllRows(sheet)
   
-  var backup = sheet.copyTo(sheet.getParent());
+  let backup = sheet.copyTo(sheet.getParent());
   backup.setName(name + "_bak").activate();
   sheet.hideSheet();
   //This line is causing a problem. "service spreadsheets failed while accessing document with id [Oscar's sheet ID]"
@@ -43,11 +43,12 @@ function importNewDataFromGdrive(incoming_sheet, file_name) {
   
   oscar_data_file.setName(file_name + "_" + isoDateString(new Date()) + "_" + isoTimeString() + ".bak");
   oscar_folder.addFile(oscar_data_file);
-  //root_folder.removeFile(oscar_data_file);
+  //DriveApp.getRootFolder().removeFile(oscar_data_file);
 }
 
 function updateAddOrRemoveRows(o_sheet, i_sheet, d_sheet, o_sos, i_sos) {
   var oscar_index, incoming_index;
+  //V8: let first_null_row = o_sheet.getLastRow();
   var first_null_row = o_sheet.getLastRow();
   var range0_start   = toNum(oscar_first_col);
   var range0_end     = toNum(oscar_last_col);
@@ -59,7 +60,7 @@ function updateAddOrRemoveRows(o_sheet, i_sheet, d_sheet, o_sos, i_sos) {
   var range2_end     = toNum(update_range2_end_col);
   var range2_size    = (range2_end - range2_start) + 1;
   
-  for (var i in i_sos) {
+  for (let i = 0; i < i_sos.length; i++) {
     oscar_index = ArrayLib.indexOf(o_sos, 0, i_sos[i][0]);
     if ((oscar_index >= 0)) {  // update a row
       i_sheet.getRange(+i + 1, range1_start, 1, range1_size).copyValuesToRange(o_sheet, range1_start, range1_end, oscar_index+2, oscar_index+2);
@@ -69,7 +70,7 @@ function updateAddOrRemoveRows(o_sheet, i_sheet, d_sheet, o_sos, i_sos) {
       i_sheet.getRange(+i + 1, range0_start, 1, range0_size).copyValuesToRange(o_sheet, range0_start, range0_end, first_null_row, first_null_row);
     }
   }
-  for (var i in o_sos) {
+  for (let i = 0; i < o_sos.length; i++) {
     incoming_index = ArrayLib.indexOf(i_sos, 0, o_sos[i][0]);
     if (incoming_index == -1) {  // clear a row
       // Comment clearing does not work, and Google doesn't care: https://issuetracker.google.com/issues/36756650
@@ -128,7 +129,7 @@ function renameOscarWithCurrentTimestamp(ss, timestamp) {
 }
 
 function setReferenceCells(oscar_sheet) {
-  oscar_sheet.getRange(reference_cell_col + 1).setValue(isoDateString(_, 1));
+  oscar_sheet.getRange(reference_cell_col + 1).setValue(isoDateString(new Date(), 1));
 }
 
 function fancySort(sheet_to_sort) {
