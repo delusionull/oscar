@@ -28,9 +28,10 @@ module Oscar
       $layup_items_in_press = Oscar::DBs::DB_SCHED[:tblLayupItemXPress]
       $layup_items_press_and_date = $layup_items_in_press.join(:tblLayupPress, :PressID => :PressID)
       $layup_lines = 
-        $layup_items.select(:JobSalesOrderNo, :LayupID, :LayupQnty, :LayupSizeID,
-                            :LayupCoreThk, :LayupGlueOverride, :LayupStagerNote,
-                            :WoNumber, :WtNumber, :Done, :Printed)
+        $layup_items.select(:JobSalesOrderNo, :JobShipDateOriginal, :LayupID,
+                            :LayupQnty, :LayupSizeID, :LayupCoreThk,
+                            :LayupGlueOverride, :LayupStagerNote, :WoNumber,
+                            :WtNumber, :Done, :Printed)
           .where(
             (Sequel[{LayupExclude: false}]) |
             (

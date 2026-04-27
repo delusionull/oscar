@@ -56,6 +56,11 @@ module Oscar
       the_lines.sort
     end
 
+    def original_ship_date
+      row = $layup_lines.find { |x| x[:JobSalesOrderNo] == @so_num }
+      row && row[:JobShipDateOriginal] ? row[:JobShipDateOriginal].strftime('%F') : ''
+    end
+
     def packaging_weight
     end
 

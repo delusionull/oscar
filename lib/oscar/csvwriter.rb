@@ -17,10 +17,12 @@ module Oscar
       city      = so.city
       state     = so.state
       wt        = so.wt_warehouse.upcase
+      orig_ship = schedule_so.original_ship_date
       last_col  = nil
       
       csv_line  = [so_num, so_suf, ship, flags, cust, edit_cols, sched, done,
-                  material, price, weight, city, state, wt, last_col].flatten
+                  material, price, weight, city, state, wt, orig_ship,
+                  last_col].flatten
 
       $csv_file << csv_line
     end

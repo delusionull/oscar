@@ -37,14 +37,15 @@ var revenue_col                 = "P";
 var weight_col                  = "Q";
 var state_col                   = "S";
 var wt_col                      = "T";
-var reference_cell_col          = "U";
+const ORIGINAL_SHIP_DATE_COL    = "U";
+var reference_cell_col          = "V";
 
 var oscar_first_edit_col        = status1_col;
 var oscar_last_edit_col         = shipping_notes_col;
 
 var oscar_edit_range            = oscar_first_edit_col + "2:" + oscar_last_edit_col;
 var oscar_first_col             = sales_order_col;
-var oscar_last_col              = "U";
+var oscar_last_col              = reference_cell_col;
 
 var numerical_first_edit_col    = toNum(oscar_first_edit_col);
 var num_of_edit_cols            = toNum(oscar_last_edit_col) - toNum(oscar_first_edit_col) + 1;
@@ -52,7 +53,7 @@ var num_of_edit_cols            = toNum(oscar_last_edit_col) - toNum(oscar_first
 var update_range1_start_col     = so_suffix_col;
 var update_range1_end_col       = customer_col;
 var update_range2_start_col     = scheduled_col;
-var update_range2_end_col       = wt_col;
+var update_range2_end_col       = ORIGINAL_SHIP_DATE_COL;
 
 var isu_sales_order_col         = "A";
 var isu_customer_col            = "B";
