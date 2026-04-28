@@ -26,23 +26,29 @@ function backupSheet(sheet, name) {
 }
 
 function importNewDataFromGdrive(incoming_sheet, file_name) {
-  if (!(fileExistsOnGDriveRoot(file_name))) {
+  var oscar_data_file = retry_("get file " + file_name, function () {
+    return getFileByNameOnGDriveRoot_(file_name);
+  }, 3, 10000);
+  if (!oscar_data_file) {
     return false;
   }
-  var oscar_data_file = DriveApp.getFilesByName(file_name).next();
+
   var csvData = Utilities.parseCsv(oscar_data_file.getBlob().getDataAsString());
   
   incoming_sheet.clear({ contentsOnly: true });
   incoming_sheet.getRange(1, 1, csvData.length, csvData[0].length).setValues(csvData);
   
-  if (DriveApp.getFoldersByName("OSCAR").hasNext()) {
-    var oscar_folder = DriveApp.getFoldersByName("OSCAR").next();
-  } else {
-    var oscar_folder = DriveApp.createFolder("OSCAR");
-  }
-  
-  oscar_data_file.setName(file_name + "_" + isoDateString(new Date()) + "_" + isoTimeString() + ".bak");
-  oscar_folder.addFile(oscar_data_file);
+  var oscar_folder = retry_("get or create OSCAR folder", function () {
+    return getOrCreateOscarFolder_();
+  }, 3, 10000);
+
+  retry_("rename imported file " + file_name, function () {
+    oscar_data_file.setName(file_name + "_" + isoDateString(new Date()) + "_" + isoTimeString() + ".bak");
+  }, 3, 10000);
+
+  retry_("move imported file to OSCAR folder", function () {
+    oscar_folder.addFile(oscar_data_file);
+  }, 3, 10000);
   //DriveApp.getRootFolder().removeFile(oscar_data_file);
 }
 
@@ -80,6 +86,39 @@ function updateAddOrRemoveRows(o_sheet, i_sheet, d_sheet, o_sos, i_sos) {
                                                            .setBackground("white");
     }
   }
+}
+
+function getFileByNameOnGDriveRoot_(file_name) {
+  var files = DriveApp.getFilesByName(file_name);
+  return files.hasNext() ? files.next() : null;
+}
+
+function getOrCreateOscarFolder_() {
+  var folders = DriveApp.getFoldersByName("OSCAR");
+  return folders.hasNext() ? folders.next() : DriveApp.createFolder("OSCAR");
+}
+
+function retry_(label, fn, maxAttempts, sleepMs) {
+  maxAttempts = maxAttempts || 3;
+  sleepMs = sleepMs || 10000;
+
+  var lastErr;
+
+  for (var attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      return fn();
+    } catch (err) {
+      lastErr = err;
+      Logger.log(label + " failed on attempt " + attempt + ": " + err.message);
+
+      if (attempt < maxAttempts) {
+        Utilities.sleep(sleepMs);
+      }
+    }
+  }
+
+  Logger.log(label + " failed after " + maxAttempts + " attempts.");
+  throw lastErr;
 }
 
 // Deprecated
